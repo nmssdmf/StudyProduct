@@ -1,1 +1,1 @@
-include ':app', ':commonlib', ':customerviewlib'
+include ':app', ':commonlib', ':customerviewlib', ':testmodule'

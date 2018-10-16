@@ -1,10 +1,9 @@
 package com.nmssdmf.commonlib.activity;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.nmssdmf.commonlib.R;
 import com.nmssdmf.commonlib.databinding.ActivityBaseTitleBinding;
@@ -18,25 +17,37 @@ import com.nmssdmf.commonlib.databinding.ActivityBaseTitleBinding;
  * 此类在BaseActivity的基础上增加了toolbar的设置
  */
 public abstract class BaseTitleActivity extends BaseActivity {
-    protected ActivityBaseTitleBinding baseBinding;
+    protected ActivityBaseTitleBinding baseTitleBinding;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        baseBinding = DataBindingUtil.setContentView(this, R.layout.activity_base_title);
-
+    protected void initAll(Bundle savedInstanceState) {
         initTitleView();
+        baseTitleBinding = (ActivityBaseTitleBinding) baseBinding;
+        initContent(savedInstanceState);
     }
 
-    private void initTitleView(){
+    @Override
+    public int setLayout() {
+        return R.layout.activity_base_title;
+    }
 
-        baseBinding.tTitle.setTitle(setTitle());
-        baseBinding.tTitle.setNavigationIcon(getDefaultNavigationIcon());
+    /**
+    * @description 初始化视图内容
+    * @author nmssdmf
+    * @date 2018/10/16 0016 9:55
+    * @params
+    * @return
+    */
+    private void initTitleView(){
+        baseTitleBinding.tTitle.setTitle(setTitle());
+        baseTitleBinding.tTitle.setNavigationIcon(getDefaultNavigationIcon());
         setNavigationClickListener();
+
+        baseTitleBinding.llRootView.addView(getContentRootView(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     public void setTitle(String title) {
-        baseBinding.tTitle.setTitle(title);
+        baseTitleBinding.tTitle.setTitle(title);
     }
 
     /**
@@ -58,7 +69,7 @@ public abstract class BaseTitleActivity extends BaseActivity {
     * @return
     */
     protected void hideNavigation(){
-        baseBinding.tTitle.setNavigationIcon(null);
+        baseTitleBinding.tTitle.setNavigationIcon(null);
     }
 
     /**
@@ -70,7 +81,7 @@ public abstract class BaseTitleActivity extends BaseActivity {
     * @return 
     */
     private void setNavigationClickListener() {
-        baseBinding.tTitle.setNavigationOnClickListener(new View.OnClickListener() {
+        baseTitleBinding.tTitle.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -79,16 +90,23 @@ public abstract class BaseTitleActivity extends BaseActivity {
     }
 
     /**
-     * <p>设置顶部的标题，之所以单独提供抽象方法，是考虑到程序有可能不使用toolbar设置标题（标题需要居中）。</p>
-     * <p>toolbar.refreshTitle(refreshTitle()); 靠左标题</p>
-     * <p>tvTitle.setText(refreshTitle()); 剧中标题/默认</p>
-     *
-     * @return title
-     */
+    * @description title设置
+    * @author nmssdmf
+    * @date 2018/10/16 0016 9:44
+    * @params
+    * @return
+    */
     public abstract String setTitle();
 
     /**
      * 除了title之外的view初始化
      */
     public abstract void initContent(Bundle savedInstanceState);
+
+    /**
+    * @description 设置子类视图view
+    * @author nmssdmf
+    * @date 2018/10/16 0016 9:50
+    */
+    public abstract View getContentRootView();
 }

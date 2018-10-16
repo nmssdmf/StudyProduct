@@ -1,9 +1,12 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion compile_sdk_version as int
 
+
+
     defaultConfig {
+        applicationId "com.nmssdmf.testmodule"
         minSdkVersion min_sdk_version as int
         targetSdkVersion target_sdk_version as int
         versionCode version_code as int
@@ -20,16 +23,17 @@ android {
         }
     }
 
-    dataBinding{
-        enabled=true
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
     }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    compile "com.android.support:recyclerview-v7:26.1.0"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
