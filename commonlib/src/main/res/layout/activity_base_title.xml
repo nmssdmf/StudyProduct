@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"/>
 
-
+        <include
+            layout="@layout/include_cut_off_slender_line"/>
     </LinearLayout>
 </layout>

@@ -1,5 +1,6 @@
 package com.nmssdmf.commonlib.activity;
 
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,12 @@ public abstract class BaseTitleActivity extends BaseActivity {
 
     @Override
     protected void initAll(Bundle savedInstanceState) {
-        initTitleView();
         baseTitleBinding = (ActivityBaseTitleBinding) baseBinding;
+
+        baseTitleBinding.llRootView.addView(getContentRootView().getRoot(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        initTitleView();
+
         initContent(savedInstanceState);
     }
 
@@ -42,8 +47,6 @@ public abstract class BaseTitleActivity extends BaseActivity {
         baseTitleBinding.tTitle.setTitle(setTitle());
         baseTitleBinding.tTitle.setNavigationIcon(getDefaultNavigationIcon());
         setNavigationClickListener();
-
-        baseTitleBinding.llRootView.addView(getContentRootView(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     public void setTitle(String title) {
@@ -108,5 +111,5 @@ public abstract class BaseTitleActivity extends BaseActivity {
     * @author nmssdmf
     * @date 2018/10/16 0016 9:50
     */
-    public abstract View getContentRootView();
+    public abstract ViewDataBinding getContentRootView();
 }
