@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomerRecyclerView">
+        <attr name="refresh_enable" format="boolean"/>
+        <attr name="loadmore_enable" format="boolean"/>
+    </declare-styleable>
+</resources>

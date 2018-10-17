@@ -497,22 +497,6 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         notifyDataSetChanged();
     }
 
-    public void refreshData(@Nullable List<T> data){
-        this.mData.clear();
-        if (data == null) {
-            data = new ArrayList<>();
-        }
-        this.mData.addAll(data);
-        if (mRequestLoadMoreListener != null) {
-            mNextLoadEnable = true;
-            mLoadMoreEnable = true;
-            mLoading = false;
-            mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_DEFAULT);
-        }
-        mLastPosition = -1;
-        notifyDataSetChanged();
-    }
-
     /**
      * insert  a item associated with the specified position of adapter
      *
@@ -553,13 +537,16 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         }
     }
 
-    public void notifyDataChangedAfterLoadMore(List<T> data) {
+    public void notifyDataChangedAfterLoadMore(boolean isRefresh, List<T> data) {
         boolean isNextLoad = false;
         if (data == null) {
             data = new ArrayList<>();
         }
-        if (data.size() == PAGE_SIZE) {
+        if (data.size() >= PAGE_SIZE) {
             isNextLoad = true;
+        }
+        if (isRefresh) {
+            mData.clear();
         }
         addData(data);
         notifyDataChangedAfterLoadMore(isNextLoad);

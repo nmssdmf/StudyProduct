@@ -1,4 +1,4 @@
-package com.nmssdmf.testmodule;
+package com.nmssdmf.studyprodect.activity;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
-import com.nmssdmf.testmodule.databinding.ActivityMainBinding;
+import com.nmssdmf.studyprodect.R;
+import com.nmssdmf.studyprodect.databinding.ActivityMainBinding;
+import com.nmssdmf.studyprodect.viewmodel.MainVM;
 
 public class MainActivity extends BaseTitleActivity {
-
     private final String TAG = MainActivity.class.getSimpleName();
-
     private ActivityMainBinding binding;
+    private MainVM vm;
 
     @Override
     public String getTAG() {
@@ -22,22 +23,29 @@ public class MainActivity extends BaseTitleActivity {
 
     @Override
     public BaseVM initViewModel() {
-        return null;
+        vm = new MainVM(this);
+        return vm;
     }
 
     @Override
     public String setTitle() {
-        return "测试主页";
+        return "新三板";
     }
 
     @Override
     public void initContent(Bundle savedInstanceState) {
-
+        binding.setVm(vm);
+        hideNavigation();
     }
 
     @Override
     public ViewDataBinding getContentRootView() {
         binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_main, null, false);
         return binding;
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

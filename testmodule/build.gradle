@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion compile_sdk_version as int
+    compileSdkVersion compile_sdk_version.toInteger()
 
 
 
     defaultConfig {
         applicationId "com.nmssdmf.testmodule"
-        minSdkVersion min_sdk_version as int
-        targetSdkVersion target_sdk_version as int
-        versionCode version_code as int
+        minSdkVersion min_sdk_version.toInteger()
+        targetSdkVersion target_sdk_version.toInteger()
+        versionCode version_code.toInteger()
         versionName version_name
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -41,4 +41,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':commonlib')
+    implementation project(':customerviewlib')
 }

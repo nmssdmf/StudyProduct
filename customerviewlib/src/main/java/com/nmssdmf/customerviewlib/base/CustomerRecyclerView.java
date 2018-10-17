@@ -1,6 +1,7 @@
 package com.nmssdmf.customerviewlib.base;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.nmssdmf.customerviewlib.R;
 
 /**
  * Created by ${nmssdmf} on 2017/11/22 0022.
@@ -28,17 +31,19 @@ public class CustomerRecyclerView extends LinearLayout implements BaseQuickAdapt
     private BaseQuickAdapter adapter;
     private int loadMorePageSize = 10;
 
+    private boolean loadmoreEnable = true;
+
     public CustomerRecyclerView(Context context) {
         super(context);
-        init(context);
+        init(context, null);
     }
 
     public CustomerRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, attrs);
     }
 
-    private void init(Context context) {
+    private void init(Context context, AttributeSet attrs) {
         this.context = context;
 
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -57,6 +62,14 @@ public class CustomerRecyclerView extends LinearLayout implements BaseQuickAdapt
 
         srl.addView(rv);
         addView(srl);
+
+        if (attrs != null) {
+            TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomerRecyclerView);
+            boolean refreshEnable = array.getBoolean(R.styleable.CustomerRecyclerView_refresh_enable, true);
+            srl.setEnabled(refreshEnable);
+
+            loadmoreEnable = array.getBoolean(R.styleable.CustomerRecyclerView_loadmore_enable, true);
+        }
     }
 
     @Override
@@ -165,10 +178,11 @@ public class CustomerRecyclerView extends LinearLayout implements BaseQuickAdapt
         this.adapter = adapter;
         //动画
 //        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        setLoadMoreEnable(loadmoreEnable);
         if (adapter.isLoadMoreEnable()) {
-            adapter.setPreLoadNumber(loadMorePageSize);
+//            adapter.setPreLoadNumber(loadMorePageSize);
+            adapter.setOnLoadMoreListener(this);
         }
-        adapter.setOnLoadMoreListener(this);
         rv.setAdapter(adapter);
     }
 

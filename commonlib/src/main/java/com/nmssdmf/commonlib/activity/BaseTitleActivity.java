@@ -44,13 +44,13 @@ public abstract class BaseTitleActivity extends BaseActivity {
     * @return
     */
     private void initTitleView(){
-        baseTitleBinding.tTitle.setTitle(setTitle());
+        setTitle(setTitle());
         baseTitleBinding.tTitle.setNavigationIcon(getDefaultNavigationIcon());
         setNavigationClickListener();
     }
 
     public void setTitle(String title) {
-        baseTitleBinding.tTitle.setTitle(title);
+        baseTitleBinding.tvTitle.setText(title);
     }
 
     /**

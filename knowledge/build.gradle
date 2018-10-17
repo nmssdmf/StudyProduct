@@ -1,0 +1,66 @@
+if (modularization.toBoolean()) {
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
+}
+
+
+android {
+    compileSdkVersion compile_sdk_version.toInteger()
+
+
+
+    defaultConfig {
+        if (modularization.toBoolean()) {
+
+        } else {
+            applicationId "com.nmssdmf.knowledge"
+        }
+        minSdkVersion min_sdk_version.toInteger()
+        targetSdkVersion target_sdk_version.toInteger()
+        versionCode version_code.toInteger()
+        versionName version_name
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            if (modularization.toBoolean()) {
+                consumerProguardFiles 'proguard-rules.pro'
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            if (modularization.toBoolean()) {
+                manifest.srcFile 'src/main/modularization/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation project(':commonlib')
+}
