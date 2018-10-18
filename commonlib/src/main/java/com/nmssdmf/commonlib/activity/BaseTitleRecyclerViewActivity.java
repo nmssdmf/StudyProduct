@@ -2,7 +2,6 @@ package com.nmssdmf.commonlib.activity;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 
 import com.nmssdmf.commonlib.R;
@@ -20,4 +19,5 @@ public abstract class BaseTitleRecyclerViewActivity extends BaseTitleActivity {
         binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_base_title_recyclerview, null, false);
         return binding;
     }
+
 }

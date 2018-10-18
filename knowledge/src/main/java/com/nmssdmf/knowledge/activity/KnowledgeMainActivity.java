@@ -1,23 +1,18 @@
 package com.nmssdmf.knowledge.activity;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
-import com.nmssdmf.commonlib.activity.BaseTitleActivity;
+import com.nmssdmf.commonlib.activity.BaseTitleRecyclerViewActivity;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
-import com.nmssdmf.knowledge.R;
-import com.nmssdmf.knowledge.databinding.ActivityKnowledgeMainBinding;
+import com.nmssdmf.knowledge.adapter.KnowledgeMainAdapter;
+import com.nmssdmf.knowledge.callback.KnowledgeMainCB;
+import com.nmssdmf.knowledge.viewmodel.KnowledgeMainVM;
 
-public class KnowledgeMainActivity extends BaseTitleActivity {
+public class KnowledgeMainActivity extends BaseTitleRecyclerViewActivity implements KnowledgeMainCB{
     private final String TAG = KnowledgeMainActivity.class.getSimpleName();
-    private ActivityKnowledgeMainBinding binding;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_knowledge_main);
-    }
+
+    private KnowledgeMainVM vm;
+    private KnowledgeMainAdapter adapter;
 
     @Override
     public String getTAG() {
@@ -26,7 +21,8 @@ public class KnowledgeMainActivity extends BaseTitleActivity {
 
     @Override
     public BaseVM initViewModel() {
-        return null;
+        vm = new KnowledgeMainVM(this);
+        return vm;
     }
 
     @Override
@@ -36,12 +32,7 @@ public class KnowledgeMainActivity extends BaseTitleActivity {
 
     @Override
     public void initContent(Bundle savedInstanceState) {
-
+        adapter = new KnowledgeMainAdapter(vm.getList());
     }
 
-    @Override
-    public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_knowledge_main, null, false);
-        return binding;
-    }
 }

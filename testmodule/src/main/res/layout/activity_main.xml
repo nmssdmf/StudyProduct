@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         tools:context="com.nmssdmf.testmodule.activity.MainActivity">
 
-        <com.nmssdmf.customerviewlib.base.CustomerRecyclerView
+        <com.nmssdmf.customerviewlib.CustomerRecyclerView
             android:id="@+id/crv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

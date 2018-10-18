@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
-import com.nmssdmf.customerviewlib.base.OnDataChangeListener;
+import com.nmssdmf.customerviewlib.OnDataChangeListener;
 import com.nmssdmf.testmodule.R;
 import com.nmssdmf.testmodule.adapter.MainAdapter;
 import com.nmssdmf.testmodule.bean.MainBean;

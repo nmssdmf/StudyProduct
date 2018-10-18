@@ -2,8 +2,8 @@ package com.nmssdmf.testmodule.adapter;
 
 import android.support.annotation.Nullable;
 
-import com.nmssdmf.customerviewlib.base.databindingbase.BaseBindingViewHolder;
-import com.nmssdmf.customerviewlib.base.databindingbase.BaseDataBindingAdapter;
+import com.nmssdmf.customerviewlib.databindingbase.BaseBindingViewHolder;
+import com.nmssdmf.customerviewlib.databindingbase.BaseDataBindingAdapter;
 import com.nmssdmf.testmodule.R;
 import com.nmssdmf.testmodule.bean.MainBean;
 import com.nmssdmf.testmodule.databinding.ItemMainBinding;
