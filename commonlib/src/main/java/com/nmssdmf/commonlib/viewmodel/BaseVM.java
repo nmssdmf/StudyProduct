@@ -1,6 +1,6 @@
 package com.nmssdmf.commonlib.viewmodel;
 
-import com.nmssdmf.commonlib.callback.BaseCallBack;
+import com.nmssdmf.commonlib.callback.BaseCB;
 
 
 /**
@@ -13,13 +13,13 @@ public abstract class BaseVM {
     /**
      * 基础view的回调
      */
-    protected BaseCallBack baseCallBck;
+    protected BaseCB baseCallBck;
 
     /**
      * 不需要callback可以传null
      * @param callBack
      */
-    public BaseVM(BaseCallBack callBack) {
+    public BaseVM(BaseCB callBack) {
         this.baseCallBck = callBack;
         registerRxBus();
     }

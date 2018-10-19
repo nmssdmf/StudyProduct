@@ -7,6 +7,7 @@ import com.nmssdmf.customerviewlib.databindingbase.BaseBindingViewHolder;
 import com.nmssdmf.customerviewlib.databindingbase.BaseDataBindingMultiItemQuickAdapter;
 import com.nmssdmf.knowledge.R;
 import com.nmssdmf.knowledge.bean.KnowledgeBean;
+import com.nmssdmf.knowledge.databinding.ItemKnowledgeMainGroupBinding;
 
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class KnowledgeMainAdapter extends BaseDataBindingMultiItemQuickAdapter<K
 
     @Override
     protected void convert2(BaseBindingViewHolder<ViewDataBinding> helper, KnowledgeBean item, int position) {
+        if (item.getItemType() == KnowledgeBean.TYPE_GROUP) {
+            ItemKnowledgeMainGroupBinding binding = (ItemKnowledgeMainGroupBinding) helper.getBinding();
+            binding.setData(item);
+        } else if (item.getItemType() == KnowledgeBean.TYPE_ITEM) {
 
+        }
     }
 }

@@ -18,9 +18,9 @@ import com.nmssdmf.testmodule.viewmodel.MainVM;
 
 import java.util.List;
 
-public class MainActivity extends BaseTitleActivity implements MainCB{
+public class TestMainActivity extends BaseTitleActivity implements MainCB{
 
-    private final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = TestMainActivity.class.getSimpleName();
 
     private ActivityMainBinding binding;
     private MainAdapter adapter;
@@ -67,7 +67,7 @@ public class MainActivity extends BaseTitleActivity implements MainCB{
 
     @Override
     public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_main, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_test_main, null, false);
         return binding;
     }
 

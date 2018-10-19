@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:name="com.nmssdmf.commonlib.application.BaseApplication">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.TestMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

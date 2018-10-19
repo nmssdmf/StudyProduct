@@ -2,7 +2,7 @@ package com.nmssdmf.studyprodect.viewmodel;
 
 import android.view.View;
 
-import com.nmssdmf.commonlib.callback.BaseCallBack;
+import com.nmssdmf.commonlib.callback.BaseCB;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
 import com.nmssdmf.studyprodect.config.ClassNameConfig;
 
@@ -17,7 +17,7 @@ public class MainVM extends BaseVM {
      *
      * @param callBack
      */
-    public MainVM(BaseCallBack callBack) {
+    public MainVM(BaseCB callBack) {
         super(callBack);
     }
 

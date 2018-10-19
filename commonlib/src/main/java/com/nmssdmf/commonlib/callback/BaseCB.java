@@ -8,7 +8,7 @@ import android.os.Bundle;
  * 最基础的ui接口,需要BaseActivity和baseFragment都实现
  */
 
-public interface BaseCallBack {
+public interface BaseCB {
     /**
     * @description 显示toast
     * @author nmssdmf

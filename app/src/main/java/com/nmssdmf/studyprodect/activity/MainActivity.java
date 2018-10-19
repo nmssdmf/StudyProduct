@@ -11,6 +11,7 @@ import com.nmssdmf.studyprodect.R;
 import com.nmssdmf.studyprodect.databinding.ActivityMainBinding;
 import com.nmssdmf.studyprodect.viewmodel.MainVM;
 
+
 public class MainActivity extends BaseTitleActivity {
     private final String TAG = MainActivity.class.getSimpleName();
     private ActivityMainBinding binding;
