@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.nmssdmf.commonlib.R;
-import com.nmssdmf.commonlib.callback.BaseCallBack;
+import com.nmssdmf.commonlib.callback.BaseCB;
 import com.nmssdmf.commonlib.util.JLog;
 import com.nmssdmf.commonlib.util.KeyBoardUtil;
 import com.nmssdmf.commonlib.util.StringUtil;
@@ -29,7 +29,7 @@ import com.nmssdmf.commonlib.viewmodel.BaseVM;
  * activity dataBinding基类
  * <p>
  */
-public abstract class BaseActivity extends AppCompatActivity implements BaseCallBack {
+public abstract class BaseActivity extends AppCompatActivity implements BaseCB {
     /**
      * 基础binding view
      */
@@ -42,10 +42,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         baseBinding = DataBindingUtil.setContentView(this, setLayout());
+
         vm = initViewModel();
 
         initAll(savedInstanceState);
+
         if (StringUtil.isEmpty(getTAG())) {
             JLog.e("TAG", "TAG == null");
             throw new NullPointerException();
