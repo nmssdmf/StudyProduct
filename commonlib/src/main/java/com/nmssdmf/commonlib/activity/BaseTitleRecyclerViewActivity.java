@@ -19,7 +19,7 @@ import java.util.List;
  * Created by ${nmssdmf} on 2018/10/17 0017.
  */
 
-public abstract class BaseTitleRecyclerViewActivity<T> extends BaseTitleActivity implements BaseTitleRecyclerViewCB{
+public abstract class BaseTitleRecyclerViewActivity extends BaseTitleActivity implements BaseTitleRecyclerViewCB{
     protected ActivityBaseTitleRecyclerviewBinding binding;
     protected BaseDataBindingAdapter adapter;
     protected BaseTitleRecyclerViewVM vm;
@@ -58,7 +58,7 @@ public abstract class BaseTitleRecyclerViewActivity<T> extends BaseTitleActivity
     }
 
     public abstract BaseTitleRecyclerViewVM initTitleRecyclerViewViewModel();
-    public abstract BaseDataBindingAdapter initAdapter(List<T> list);
+    public abstract BaseDataBindingAdapter initAdapter(List list);
 
     @Override
     public void refreshAdapter(final boolean isRefresh,final  List dataList) {
