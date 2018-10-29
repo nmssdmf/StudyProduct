@@ -25,6 +25,16 @@ public class KnowledgeBean extends BaseObservable implements MultiItemEntity{
 
     private List<KnowledgeBean> items;
 
+    private boolean unfold;//展开item布局
+
+    public boolean isUnfold() {
+        return unfold;
+    }
+
+    public void setUnfold(boolean unfold) {
+        this.unfold = unfold;
+    }
+
     @Bindable
     public int getType() {
         return type;

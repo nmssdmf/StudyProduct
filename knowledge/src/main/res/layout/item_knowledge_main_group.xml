@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@{data.groupTitle}"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginRight="10dp"
-            android:gravity="center"
+            android:gravity="center_vertical|left"
             android:textColor="@color/red"
             android:textSize="20dp"/>
 

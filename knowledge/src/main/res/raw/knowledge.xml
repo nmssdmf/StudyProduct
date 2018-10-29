@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Knowledge>
+    <Group title="第一组">
+        <Item>第一组1号</Item>
+        <Item>第一组2号</Item>
+        <Item>第一组3号</Item>
+        <Item>第一组4号</Item>
+        <Item>第一组5号</Item>
+    </Group>
+
+    <Group title="第二组">
+        <Item>第二组1号</Item>
+        <Item>第二组2号</Item>
+        <Item>第二组3号</Item>
+        <Item>第二组4号</Item>
+        <Item>第二组5号</Item>
+    </Group>
+</Knowledge>

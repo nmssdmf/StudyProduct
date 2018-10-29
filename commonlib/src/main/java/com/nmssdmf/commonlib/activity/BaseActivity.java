@@ -42,18 +42,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCB {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        baseBinding = DataBindingUtil.setContentView(this, setLayout());
-
-        vm = initViewModel();
-
-        initAll(savedInstanceState);
-
         if (StringUtil.isEmpty(getTAG())) {
             JLog.e("TAG", "TAG == null");
             throw new NullPointerException();
         }
         JLog.d(getTAG(), getTAG()+":onCreate");
+        baseBinding = DataBindingUtil.setContentView(this, setLayout());
+
+        vm = initViewModel();
+
+        initAll(savedInstanceState);
     }
 
     @Override

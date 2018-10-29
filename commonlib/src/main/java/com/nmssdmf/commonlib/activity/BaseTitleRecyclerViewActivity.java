@@ -62,6 +62,8 @@ public abstract class BaseTitleRecyclerViewActivity extends BaseTitleActivity im
 
     @Override
     public void refreshAdapter(final boolean isRefresh,final  List dataList) {
+        if (isRefresh)
+            binding.crv.setRefreshing(false);
         new Handler().post(new Runnable() {
             @Override
             public void run() {
