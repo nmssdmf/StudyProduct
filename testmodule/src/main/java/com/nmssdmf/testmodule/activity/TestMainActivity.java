@@ -13,7 +13,7 @@ import com.nmssdmf.testmodule.R;
 import com.nmssdmf.testmodule.adapter.MainAdapter;
 import com.nmssdmf.testmodule.bean.MainBean;
 import com.nmssdmf.testmodule.callback.MainCB;
-import com.nmssdmf.testmodule.databinding.ActivityMainBinding;
+import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
 import com.nmssdmf.testmodule.viewmodel.MainVM;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
 
     private final String TAG = TestMainActivity.class.getSimpleName();
 
-    private ActivityMainBinding binding;
+    private ActivityTestMainBinding binding;
     private MainAdapter adapter;
     private MainVM vm;
     @Override
