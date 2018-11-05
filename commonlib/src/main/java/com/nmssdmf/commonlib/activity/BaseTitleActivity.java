@@ -1,7 +1,9 @@
 package com.nmssdmf.commonlib.activity;
 
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,12 +21,12 @@ import com.nmssdmf.commonlib.databinding.ActivityBaseTitleBinding;
  */
 public abstract class BaseTitleActivity extends BaseActivity {
     protected ActivityBaseTitleBinding baseTitleBinding;
-
+    protected ViewDataBinding baseViewBinding;
     @Override
     protected void initAll(Bundle savedInstanceState) {
         baseTitleBinding = (ActivityBaseTitleBinding) baseBinding;
-
-        baseTitleBinding.llRootView.addView(getContentRootView().getRoot(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        baseViewBinding = DataBindingUtil.inflate(LayoutInflater.from(this), getContentViewId(), null, false);
+        baseTitleBinding.llRootView.addView(baseViewBinding.getRoot(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         initTitleView();
 
@@ -111,5 +113,5 @@ public abstract class BaseTitleActivity extends BaseActivity {
     * @author nmssdmf
     * @date 2018/10/16 0016 9:50
     */
-    public abstract ViewDataBinding getContentRootView();
+    public abstract int getContentViewId();
 }

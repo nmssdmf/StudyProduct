@@ -43,6 +43,7 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
 
     @Override
     public void initContent(Bundle savedInstanceState) {
+        binding = (ActivityTestMainBinding) baseViewBinding;
         hideNavigation();
         adapter = new MainAdapter(vm.getList());
         binding.crv.setAdapter(adapter);
@@ -66,9 +67,8 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
     }
 
     @Override
-    public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_test_main, null, false);
-        return binding;
+    public int getContentViewId() {
+        return R.layout.activity_test_main;
     }
 
     @Override

@@ -25,9 +25,8 @@ public abstract class BaseTitleRecyclerViewActivity extends BaseTitleActivity im
     protected BaseTitleRecyclerViewVM vm;
 
     @Override
-    public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_base_title_recyclerview, null, false);
-        return binding;
+    public int getContentViewId() {
+        return R.layout.activity_base_title_recyclerview;
     }
 
     @Override
