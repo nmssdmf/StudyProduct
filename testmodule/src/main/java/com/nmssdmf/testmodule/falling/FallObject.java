@@ -6,6 +6,8 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
+import com.nmssdmf.commonlib.util.JLog;
+
 import java.util.Random;
 
 /**
@@ -13,6 +15,7 @@ import java.util.Random;
  */
 
 public class FallObject {
+    private final String TAG = FallObject.class.getSimpleName();
     private int initX;
     private int initY;
     private Random random;
@@ -34,6 +37,7 @@ public class FallObject {
 
     public FallObject(Builder buidler, int parentWidth, int parentHeight) {
         random = new Random();
+        this.builder = buidler;
         this.parentHeight = parentHeight;
         this.parentWidth = parentWidth;
 
@@ -44,57 +48,52 @@ public class FallObject {
         presentY = initY;
 
         initSpeed = buidler.initSpeed;
-
-        presentSpeed = initSpeed;
         bitmap = buidler.bitmap;
-        objectWidth = bitmap.getWidth();
-        objectHeight = bitmap.getHeight();
+
+        randomSize();
+        randomSpeed();
     }
 
-    private FallObject (Builder builder) {
+    private FallObject(Builder builder) {
         this.builder = builder;
         initSpeed = builder.initSpeed;
         bitmap = builder.bitmap;
     }
 
-    public static final class Builder{
+    public static final class Builder {
         private int initSpeed;
         private Bitmap bitmap;
 
-        public Builder (Bitmap bitmap) {
-            this.initSpeed = new Random().nextInt(defaultSpeed);
-            this.bitmap = bitmap;
-        }
-
         public Builder(Drawable drawable) {
-            this.initSpeed = new Random().nextInt(defaultSpeed);
-            this.bitmap = drawableToBitMap(drawable);
+            this.initSpeed = defaultSpeed;
+            bitmap = drawableToBitMap(drawable);
         }
 
-        public Builder setSize(int w, int h){
+        public Builder setSize(int w, int h) {
             this.bitmap = changeBitmapSize(this.bitmap, w, h);
             return this;
         }
 
-        public Builder setSpeed(int speed){
-            initSpeed = new Random().nextInt(speed);
+        public Builder setSpeed(int speed) {
+            initSpeed = speed;
             return this;
         }
 
-        public FallObject build(){
+        public FallObject build() {
             return new FallObject(this);
         }
     }
 
     /**
      * drawable图片资源转bitmap
+     *
      * @param drawable
      * @return
      */
-    public static Bitmap drawableToBitMap(Drawable drawable){
+    public static Bitmap drawableToBitMap(Drawable drawable) {
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight(),
-                    drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
@@ -103,9 +102,10 @@ public class FallObject {
 
     /**
      * 改变bitmap的大小
+     *
      * @param bitmap 目标bitmap
-     * @param newW 目标宽度
-     * @param newH 目标高度
+     * @param newW   目标宽度
+     * @param newH   目标高度
      * @return
      */
     public static Bitmap changeBitmapSize(Bitmap bitmap, int newW, int newH) {
@@ -123,10 +123,31 @@ public class FallObject {
     }
 
     /**
+     * 随机物体初始下落速度
+     */
+    private void randomSpeed(){
+        presentSpeed = (float)((random.nextInt(4)+1)*0.1+1)* initSpeed;//这些随机数大家可以按自己的需要进行调整
+    }
+
+    /**
+     * 随机物体初始大小比例
+     */
+    private void randomSize() {
+        float r = (random.nextInt(5) + 5) * 0.1f;
+        float rW = r * builder.bitmap.getWidth();
+        float rH = r * builder.bitmap.getHeight();
+        bitmap = changeBitmapSize(builder.bitmap, (int) rW, (int) rH);
+
+        objectWidth = bitmap.getWidth();
+        objectHeight = bitmap.getHeight();
+    }
+
+    /**
      * 位置物体对象
+     *
      * @param canvas
      */
-    public void drawObject(Canvas canvas){
+    public void drawObject(Canvas canvas) {
         moveObject();
         canvas.drawBitmap(bitmap, presentX, presentY, null);
     }
@@ -134,7 +155,7 @@ public class FallObject {
     /**
      * 移动物体对象
      */
-    private void moveObject(){
+    private void moveObject() {
         moveY();
         if (presentY > parentHeight) {
             reset();
@@ -148,8 +169,9 @@ public class FallObject {
         presentY += presentSpeed;
     }
 
-    private void reset(){
+    private void reset() {
         presentY = random.nextInt(parentHeight) - parentHeight;
-        presentSpeed = new Random().nextInt(defaultSpeed);
+        randomSize();
+        randomSpeed();
     }
 }

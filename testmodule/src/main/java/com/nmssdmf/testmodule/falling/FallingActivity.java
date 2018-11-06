@@ -32,11 +32,11 @@ public class FallingActivity extends BaseTitleActivity {
         //初始化一个雪球样式的fallObject
         FallObject.Builder builder = new FallObject.Builder(getResources().getDrawable(R.drawable.snow));
         FallObject fallObject = builder
-                .setSpeed(10)
+                .setSpeed(5)
                 .setSize(50, 50)
                 .build();
 
-        binding.fv.addFallObject(fallObject,50);//添加50个雪球对象
+        binding.fv.addFallObject(fallObject,80);//添加50个雪球对象
     }
 
     @Override
