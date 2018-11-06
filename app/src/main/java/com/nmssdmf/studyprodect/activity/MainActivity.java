@@ -1,9 +1,6 @@
 package com.nmssdmf.studyprodect.activity;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
@@ -40,9 +37,8 @@ public class MainActivity extends BaseTitleActivity {
     }
 
     @Override
-    public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_main, null, false);
-        return binding;
+    public int getContentViewId() {
+        return  R.layout.activity_main;
     }
 
     @Override

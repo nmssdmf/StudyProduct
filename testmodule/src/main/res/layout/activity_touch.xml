@@ -5,9 +5,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.TouchActivity">
+        tools:context=".touchevent.TouchActivity">
 
-        <com.nmssdmf.testmodule.view.TouchViewGroupA
+        <com.nmssdmf.testmodule.touchevent.TouchViewGroupA
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:background="@color/blue">
@@ -18,7 +18,7 @@
                 android:text="ViewGroupA"
                 android:textColor="@color/white"/>
 
-            <com.nmssdmf.testmodule.view.TouchViewGroupB
+            <com.nmssdmf.testmodule.touchevent.TouchViewGroupB
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@color/green"
@@ -30,7 +30,7 @@
                     android:text="ViewGroupB"
                     android:textColor="@color/white"/>
 
-                <com.nmssdmf.testmodule.view.TouchView
+                <com.nmssdmf.testmodule.touchevent.TouchView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@color/red"
@@ -38,9 +38,9 @@
                     android:layout_marginLeft="40dp"
                     android:text="View"
                     android:textColor="@color/white"/>
-            </com.nmssdmf.testmodule.view.TouchViewGroupB>
+            </com.nmssdmf.testmodule.touchevent.TouchViewGroupB>
 
-        </com.nmssdmf.testmodule.view.TouchViewGroupA>
+        </com.nmssdmf.testmodule.touchevent.TouchViewGroupA>
 
     </RelativeLayout>
 </layout>

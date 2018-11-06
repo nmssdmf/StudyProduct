@@ -14,11 +14,6 @@ public class StudioMainActivity extends BaseTitleActivity {
 
     private final String TAG = StudioMainActivity.class.getSimpleName();
     private ActivityStudioMainBinding binding;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_studio_main);
-    }
 
     @Override
     public String getTAG() {
@@ -41,8 +36,7 @@ public class StudioMainActivity extends BaseTitleActivity {
     }
 
     @Override
-    public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_studio_main, null, false);
-        return binding;
+    public int getContentViewId() {
+        return R.layout.activity_studio_main;
     }
 }

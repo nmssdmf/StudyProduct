@@ -1,9 +1,6 @@
 package com.nmssdmf.knowledge.activity;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import com.google.gson.Gson;
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
@@ -45,9 +42,8 @@ public class KnowledgeMainActivity extends BaseTitleActivity implements Knowledg
     }
 
     @Override
-    public ViewDataBinding getContentRootView() {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_knowledge_main, null, false);
-        return binding;
+    public int getContentViewId() {
+        return R.layout.activity_knowledge_main;
     }
 
     @Override
