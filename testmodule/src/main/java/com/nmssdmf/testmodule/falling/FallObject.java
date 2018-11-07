@@ -6,8 +6,6 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
-import com.nmssdmf.commonlib.util.JLog;
-
 import java.util.Random;
 
 /**

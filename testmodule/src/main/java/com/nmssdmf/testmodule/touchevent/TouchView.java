@@ -23,6 +23,7 @@ public class TouchView extends android.support.v7.widget.AppCompatTextView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 JLog.d(TAG, "ACTION_DOWN");
+//                return false;
                 break;
             case MotionEvent.ACTION_MOVE:
                 JLog.d(TAG, "ACTION_MOVE");

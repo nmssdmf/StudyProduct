@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import java.lang.reflect.Field;
+
 /**
  * @author mahuafeng
  * @title
@@ -90,5 +92,27 @@ public class DensityUtil {
         //返回屏幕宽度
         screenHeight = displayMetrics.heightPixels;
         return screenHeight;
+    }
+
+    /**
+     * 获取手机状态栏高度
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context){
+        Class<?> c;
+        Object obj;
+        Field field;
+        int x, statusBarHeight = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            statusBarHeight = context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return statusBarHeight;
     }
 }

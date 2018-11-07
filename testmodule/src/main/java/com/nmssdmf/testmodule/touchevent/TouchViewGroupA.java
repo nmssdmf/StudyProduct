@@ -40,8 +40,8 @@ public class TouchViewGroupA extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 JLog.d(TAG, "ACTION_DOWN");
-//                return true;
-                break;
+                return false;
+//                break;
             case MotionEvent.ACTION_MOVE:
                 JLog.d(TAG, "ACTION_MOVE");
 //                return true;
@@ -59,8 +59,8 @@ public class TouchViewGroupA extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 JLog.d(TAG, "ACTION_DOWN");
-                return true;
-//                break;
+//                return true;
+                break;
             case MotionEvent.ACTION_MOVE:
                 JLog.d(TAG, "ACTION_MOVE");
                 break;

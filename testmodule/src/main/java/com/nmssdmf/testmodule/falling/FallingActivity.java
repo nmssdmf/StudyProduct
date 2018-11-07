@@ -33,7 +33,7 @@ public class FallingActivity extends BaseTitleActivity {
         FallObject.Builder builder = new FallObject.Builder(getResources().getDrawable(R.drawable.snow));
         FallObject fallObject = builder
                 .setSpeed(5)
-                .setSize(50, 50)
+                .setSize(100, 100)
                 .setWind(10)
                 .build();
 

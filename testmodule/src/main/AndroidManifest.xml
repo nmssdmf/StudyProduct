@@ -19,6 +19,8 @@
             android:name=".falling.FallingActivity"
             android:label="@string/title_activity_falling"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".bookpage.BookPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
