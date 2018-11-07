@@ -6,6 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Xfermode;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,9 +22,14 @@ import com.nmssdmf.commonlib.util.DensityUtil;
 public class BookPageView extends View {
     private Paint pointPaint;//绘制各个标识点的画笔
     private Paint bgPaint;//背景画笔
+
     private Paint pathAPaint;//绘制A区域画笔
+    private Paint pathBPaint;//绘制B区域画笔
+    private Paint pathCPaint;//绘制C区域画笔
 
     private Path pathA;
+    private Path pathB;
+    private Path pathC;
     private Bitmap bitmap;//缓存bitmap
     private Canvas bitmapCanvas;
 
@@ -50,19 +58,23 @@ public class BookPageView extends View {
         viewWidth = defaultWidth;
         viewHeight = defaultHeight;
 
-        a = new MyPoint(700, 1400);
+//        a = new MyPoint(defaultWidth * 0.7f, defaultHeight * 0.7f);
+//        a = new MyPoint(defaultWidth * 0.7f, defaultHeight * 0.3f);
+        a = new MyPoint();
         b = new MyPoint();
         c = new MyPoint();
         d = new MyPoint();
         e = new MyPoint();
-        f = new MyPoint(viewWidth, viewHeight);
+        f = new MyPoint();
+//        f = new MyPoint(viewWidth, viewHeight);
+//        f = new MyPoint(viewWidth, 0);
         g = new MyPoint();
         h = new MyPoint();
         i = new MyPoint();
         j = new MyPoint();
         k = new MyPoint();
 
-        calcPointsXY(a, f);
+//        calcPointsXY(a, f);
 
         pointPaint = new Paint();
         pointPaint.setColor(Color.RED);
@@ -75,7 +87,49 @@ public class BookPageView extends View {
         pathAPaint.setColor(Color.GREEN);
         pathAPaint.setAntiAlias(true);//设置抗锯齿
 
+        pathBPaint = new Paint();
+        pathBPaint.setColor(Color.BLUE);
+        pathBPaint.setAntiAlias(true);//设置抗锯齿
+        Xfermode xfermodeB = new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP);
+        pathBPaint.setXfermode(xfermodeB);
+
+        pathCPaint = new Paint();
+        pathCPaint.setColor(Color.YELLOW);
+        pathCPaint.setAntiAlias(true);//设置抗锯齿
+        Xfermode xfermodeC = new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP);
+        pathCPaint.setXfermode(xfermodeC);
+
         pathA = new Path();
+        pathB = new Path();
+        pathC = new Path();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int height = measureSize(defaultHeight, heightMeasureSpec);
+        int width = measureSize(defaultWidth, widthMeasureSpec);
+
+        setMeasuredDimension(width, height);
+         viewWidth = width;
+         viewHeight = height;
+         f.x = width;
+         f.y = height;
+         a.x = f.x * 0.7f;
+         a.y = f.y * 0.7f;
+         calcPointsXY(a, f);
+    }
+
+    private int measureSize(int defaultSize, int measureSpec) {
+        int result = defaultSize;
+        int specMode = View.MeasureSpec.getMode(measureSpec);
+        int specSize = View.MeasureSpec.getSize(measureSpec);
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else  if (specMode == MeasureSpec.AT_MOST) {
+            result = Math.min(result, specSize);
+        }
+        return result;
     }
 
     @Override
@@ -97,28 +151,69 @@ public class BookPageView extends View {
         canvas.drawText("k", k.x, k.y, pointPaint);
 
         bitmap = Bitmap.createBitmap((int) viewWidth, (int) viewHeight, Bitmap.Config.ARGB_8888);
-//        bitmapCanvas = new Canvas(bitmap);
-//        bitmapCanvas.drawPath(getPathAFromLowerRight(),pathAPaint);
+        bitmapCanvas = new Canvas(bitmap);
+        bitmapCanvas.drawPath(getPathAFromLowerRight(), pathAPaint);
+//        bitmapCanvas.drawPath(getPathAFromTopRight(), pathAPaint);
 
-        canvas.drawPath(getPathAFromLowerRight(),pathAPaint);
+        bitmapCanvas.drawPath(getPathC(), pathCPaint);
+//
+        bitmapCanvas.drawPath(getPathB(), pathBPaint);
 
-//        canvas.drawBitmap(bitmap,0,0,null);
+        canvas.drawBitmap(bitmap, 0, 0, null);
+    }
+
+    private Path getPathB() {
+        pathB.reset();
+        pathB.lineTo(viewWidth, 0);
+        pathB.lineTo(viewWidth, viewHeight);
+        pathB.lineTo(0, viewHeight);
+        pathB.close();
+        return pathB;
+    }
+
+    private Path getPathC() {
+        pathC.reset();
+        pathC.moveTo(i.x, i.y);
+        pathC.lineTo(d.x, d.y);
+        pathC.lineTo(b.x, b.y);
+        pathC.lineTo(a.x, a.y);
+        pathC.lineTo(k.x, k.y);
+        pathC.close();
+        return pathC;
     }
 
     /**
      * 获取f点在右下角的pathA
+     *
      * @return
      */
-    private Path getPathAFromLowerRight(){
+    private Path getPathAFromLowerRight() {
         pathA.reset();
         pathA.lineTo(0, viewHeight);//移动到左下角
+        pathA.lineTo(c.x, c.y);//移动到c点
+        pathA.quadTo(e.x, e.y, b.x, b.y);//从c到b画贝塞尔曲线，控制点为e
+        pathA.lineTo(a.x, a.y);//移动到a点
+        pathA.lineTo(k.x, k.y);//移动到k点
+        pathA.quadTo(h.x, h.y, j.x, j.y);//从k到j画贝塞尔曲线，控制点为h
+        pathA.lineTo(viewWidth, 0);//移动到右上角
+        pathA.close();//闭合区域
+        return pathA;
+    }
+
+    /**
+     * 获取f点在右上角的pathA
+     * @return
+     */
+    private Path getPathAFromTopRight(){
+        pathA.reset();
         pathA.lineTo(c.x,c.y);//移动到c点
         pathA.quadTo(e.x,e.y,b.x,b.y);//从c到b画贝塞尔曲线，控制点为e
         pathA.lineTo(a.x,a.y);//移动到a点
         pathA.lineTo(k.x,k.y);//移动到k点
         pathA.quadTo(h.x,h.y,j.x,j.y);//从k到j画贝塞尔曲线，控制点为h
-        pathA.lineTo(viewWidth,0);//移动到右上角
-        pathA.close();//闭合区域
+        pathA.lineTo(viewWidth,viewHeight);//移动到右下角
+        pathA.lineTo(0, viewHeight);//移动到左下角
+        pathA.close();
         return pathA;
     }
 

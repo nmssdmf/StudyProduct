@@ -21,7 +21,7 @@ public class BookPageActivity extends BaseTitleActivity {
 
     @Override
     public String setTitle() {
-        return null;
+        return "翻页动画";
     }
 
     @Override
