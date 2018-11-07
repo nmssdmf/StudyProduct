@@ -34,6 +34,7 @@ public class FallingActivity extends BaseTitleActivity {
         FallObject fallObject = builder
                 .setSpeed(10)
                 .setSize(50, 50)
+                .setWind(10)
                 .build();
 
         binding.fv.addFallObject(fallObject,50);//添加50个雪球对象
