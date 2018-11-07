@@ -6,6 +6,8 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
+import com.nmssdmf.commonlib.util.JLog;
+
 import java.util.Random;
 
 /**
@@ -13,6 +15,7 @@ import java.util.Random;
  */
 
 public class FallObject {
+    private final String TAG = FallObject.class.getSimpleName();
     private int initX;
     private int initY;
     private Random random;
@@ -41,6 +44,7 @@ public class FallObject {
 
     public FallObject(Builder buidler, int parentWidth, int parentHeight) {
         random = new Random();
+        this.builder = buidler;
         this.parentHeight = parentHeight;
         this.parentWidth = parentWidth;
 
@@ -51,11 +55,10 @@ public class FallObject {
         presentY = initY;
 
         initSpeed = buidler.initSpeed;
-
-        presentSpeed = initSpeed;
         bitmap = buidler.bitmap;
-        objectWidth = bitmap.getWidth();
-        objectHeight = bitmap.getHeight();
+
+        randomSize();
+        randomSpeed();
 
         randomWind();
     }
@@ -72,9 +75,9 @@ public class FallObject {
         private int initWindLevel;
 
         public Builder(Drawable drawable) {
-            this.initSpeed = new Random().nextInt(defaultSpeed);
+            this.initSpeed = defaultSpeed;
+            bitmap = drawableToBitMap(drawable);
             initWindLevel = defaultWindLevel;
-            this.bitmap = drawableToBitMap(drawable);
         }
 
         public Builder setSize(int w, int h) {
@@ -83,7 +86,7 @@ public class FallObject {
         }
 
         public Builder setSpeed(int speed) {
-            initSpeed = new Random().nextInt(speed);
+            initSpeed = speed;
             return this;
         }
 
@@ -142,6 +145,26 @@ public class FallObject {
     }
 
     /**
+     * 随机物体初始下落速度
+     */
+    private void randomSpeed(){
+        presentSpeed = (float)((random.nextInt(4)+1)*0.1+1)* initSpeed;//这些随机数大家可以按自己的需要进行调整
+    }
+
+    /**
+     * 随机物体初始大小比例
+     */
+    private void randomSize() {
+        float r = (random.nextInt(5) + 5) * 0.1f;
+        float rW = r * builder.bitmap.getWidth();
+        float rH = r * builder.bitmap.getHeight();
+        bitmap = changeBitmapSize(builder.bitmap, (int) rW, (int) rH);
+
+        objectWidth = bitmap.getWidth();
+        objectHeight = bitmap.getHeight();
+    }
+
+    /**
      * 位置物体对象
      *
      * @param canvas
@@ -182,6 +205,8 @@ public class FallObject {
         presentSpeed = new Random().nextInt(defaultSpeed);
 
         randomWind();//记得重置一下初始角度，不然雪花会越下越少（因为角度累加会让雪花越下越偏）
+        randomSize();
+        randomSpeed();
     }
 
     /**

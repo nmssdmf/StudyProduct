@@ -23,13 +23,10 @@ public class FallingView extends View {
 
     private int viewWidth;
     private int viewHeight;
-    private int intervalTime = 5;//重绘间隔时间
+    private int intervalTime = 1;//重绘间隔时间
 
     private int defaultWidth;//屏幕宽度
     private int defaultHeight;//屏幕高度
-
-    private Paint fallPaint;
-    private int snowY;
 
     private List<FallObject> fallObjectList;
 
@@ -50,11 +47,6 @@ public class FallingView extends View {
 
         defaultHeight = DensityUtil.getScreenHeight(context);
         defaultWidth = DensityUtil.getScreenWidth(context);
-
-        fallPaint = new Paint();
-        fallPaint.setColor(Color.RED);
-        fallPaint.setStyle(Paint.Style.FILL);
-        snowY = 0;
     }
 
     @Override
