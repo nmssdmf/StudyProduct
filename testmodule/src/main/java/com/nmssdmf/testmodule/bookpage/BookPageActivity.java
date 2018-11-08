@@ -74,7 +74,7 @@ public class BookPageActivity extends BaseTitleActivity {
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        binding.bpv.setPathDefault();
+                        binding.bpv.startCancelAnim();
                         break;
                     }
                 }

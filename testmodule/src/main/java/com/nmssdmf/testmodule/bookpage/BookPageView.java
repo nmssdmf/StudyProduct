@@ -12,6 +12,8 @@ import android.graphics.Xfermode;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.Scroller;
 
 import com.nmssdmf.commonlib.util.DensityUtil;
 
@@ -47,6 +49,8 @@ public class BookPageView extends View {
     public static final String STYLE_RIGHT = "STYLE_RIGHT";//点击右边区域
     public static final String STYLE_MIDDLE = "STYLE_MIDDLE";//点击中间区域
 
+    private Scroller mScroller;
+
 
     public BookPageView(Context context) {
         super(context);
@@ -60,6 +64,8 @@ public class BookPageView extends View {
     }
 
     private void init(Context context) {
+        mScroller = new Scroller(context, new LinearInterpolator());
+
         defaultWidth = DensityUtil.getScreenWidth(context);
         defaultHeight = DensityUtil.getScreenHeight(context) - DensityUtil.dpToPx(context, 48) - DensityUtil.getStatusBarHeight(context);
 
@@ -110,6 +116,40 @@ public class BookPageView extends View {
         pathA = new Path();
         pathB = new Path();
         pathC = new Path();
+    }
+
+    @Override
+    public void computeScroll() {
+        if (mScroller.computeScrollOffset()) {
+            float x= mScroller.getCurrX();
+            float y = mScroller.getCurrY();
+
+            if (style.equals(STYLE_TOP_RIGHT)) {
+                setTouchPoint(x, y, STYLE_TOP_RIGHT);
+            } else {
+                setTouchPoint(x, y, STYLE_LOWER_RIGHT);
+            }
+            if (mScroller.getFinalX() == x && mScroller.getFinalY() == y) {
+                setPathDefault();
+            }
+        }
+        super.computeScroll();
+    }
+
+    /**
+     * 取消翻页动画,计算滑动位置与时间
+     */
+    public void startCancelAnim(){
+        int dx, dy;
+        //让a滑动到f点所在的位置，流出1像素是为了防止当a和f重叠时候出现view闪烁的情况
+        if (style.equals(STYLE_TOP_RIGHT)) {
+            dx = (int) (viewWidth - 1 - a.x);
+            dy = (int) (1 - a.y);
+        } else {
+            dx = (int) (viewWidth - 1 - a.x);
+            dy = (int) (viewHeight - 1 - a.y);
+        }
+        mScroller.startScroll((int) a.x, (int) a.y, dx, dy, 400);
     }
 
     @Override
