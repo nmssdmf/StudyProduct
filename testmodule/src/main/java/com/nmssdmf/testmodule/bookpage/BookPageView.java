@@ -40,6 +40,14 @@ public class BookPageView extends View {
     private int viewWidth;
     private int viewHeight;
 
+    private String style;
+    public static final String STYLE_TOP_RIGHT = "STYLE_TOP_RIGHT";//f点在右上角
+    public static final String STYLE_LOWER_RIGHT = "STYLE_LOWER_RIGHT";//f点在右下角
+    public static final String STYLE_LEFT = "STYLE_LEFT";//点击左边区域
+    public static final String STYLE_RIGHT = "STYLE_RIGHT";//点击右边区域
+    public static final String STYLE_MIDDLE = "STYLE_MIDDLE";//点击中间区域
+
+
     public BookPageView(Context context) {
         super(context);
 
@@ -60,7 +68,7 @@ public class BookPageView extends View {
 
 //        a = new MyPoint(defaultWidth * 0.7f, defaultHeight * 0.7f);
 //        a = new MyPoint(defaultWidth * 0.7f, defaultHeight * 0.3f);
-        a = new MyPoint();
+        a = new MyPoint(-1, -1);
         b = new MyPoint();
         c = new MyPoint();
         d = new MyPoint();
@@ -111,13 +119,18 @@ public class BookPageView extends View {
         int width = measureSize(defaultWidth, widthMeasureSpec);
 
         setMeasuredDimension(width, height);
-         viewWidth = width;
-         viewHeight = height;
-         f.x = width;
-         f.y = height;
-         a.x = f.x * 0.7f;
-         a.y = f.y * 0.7f;
-         calcPointsXY(a, f);
+        viewWidth = width;
+        viewHeight = height;
+        if (f.x == 0 && f.y == 0) {
+            f.x = viewWidth;
+            f.y = viewHeight;
+            calcPointsXY(a, f);
+        }
+//        f.x = width;
+//        f.y = height;
+//        a.x = -1;//f.x * 0.7f;
+//        a.y = -1;//f.y * 0.7f;
+//
     }
 
     private int measureSize(int defaultSize, int measureSpec) {
@@ -126,7 +139,7 @@ public class BookPageView extends View {
         int specSize = View.MeasureSpec.getSize(measureSpec);
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
-        } else  if (specMode == MeasureSpec.AT_MOST) {
+        } else if (specMode == MeasureSpec.AT_MOST) {
             result = Math.min(result, specSize);
         }
         return result;
@@ -138,28 +151,105 @@ public class BookPageView extends View {
         canvas.drawRect(0, 0, viewWidth, viewHeight, bgPaint);
 
         //绘制各个标记点
-        canvas.drawText("a", a.x, a.y, pointPaint);
-        canvas.drawText("b", b.x, b.y, pointPaint);
-        canvas.drawText("c", c.x, c.y, pointPaint);
-        canvas.drawText("d", d.x, d.y, pointPaint);
-        canvas.drawText("e", e.x, e.y, pointPaint);
-        canvas.drawText("f", f.x, f.y, pointPaint);
-        canvas.drawText("g", g.x, g.y, pointPaint);
-        canvas.drawText("h", h.x, h.y, pointPaint);
-        canvas.drawText("i", i.x, i.y, pointPaint);
-        canvas.drawText("j", j.x, j.y, pointPaint);
-        canvas.drawText("k", k.x, k.y, pointPaint);
+//        canvas.drawText("a", a.x, a.y, pointPaint);
+//        canvas.drawText("b", b.x, b.y, pointPaint);
+//        canvas.drawText("c", c.x, c.y, pointPaint);
+//        canvas.drawText("d", d.x, d.y, pointPaint);
+//        canvas.drawText("e", e.x, e.y, pointPaint);
+//        canvas.drawText("f", f.x, f.y, pointPaint);
+//        canvas.drawText("g", g.x, g.y, pointPaint);
+//        canvas.drawText("h", h.x, h.y, pointPaint);
+//        canvas.drawText("i", i.x, i.y, pointPaint);
+//        canvas.drawText("j", j.x, j.y, pointPaint);
+//        canvas.drawText("k", k.x, k.y, pointPaint);
 
         bitmap = Bitmap.createBitmap((int) viewWidth, (int) viewHeight, Bitmap.Config.ARGB_8888);
         bitmapCanvas = new Canvas(bitmap);
-        bitmapCanvas.drawPath(getPathAFromLowerRight(), pathAPaint);
-//        bitmapCanvas.drawPath(getPathAFromTopRight(), pathAPaint);
 
-        bitmapCanvas.drawPath(getPathC(), pathCPaint);
-//
-        bitmapCanvas.drawPath(getPathB(), pathBPaint);
+//        bitmapCanvas.drawPath(getPathAFromLowerRight(), pathAPaint);
+//        bitmapCanvas.drawPath(getPathAFromTopRight(), pathAPaint);
+//        bitmapCanvas.drawPath(getPathC(), pathCPaint);
+//        bitmapCanvas.drawPath(getPathB(), pathBPaint);
+
+        if (a.x == -1 && a.y == -1) {
+            bitmapCanvas.drawPath(getPathDefault(), pathAPaint);
+        } else {
+            if (f.x == viewWidth && f.y == 0) {
+                bitmapCanvas.drawPath(getPathAFromTopRight(), pathAPaint);
+            } else {
+                bitmapCanvas.drawPath(getPathAFromLowerRight(), pathAPaint);
+            }
+            bitmapCanvas.drawPath(getPathC(), pathCPaint);
+            bitmapCanvas.drawPath(getPathB(), pathBPaint);
+        }
 
         canvas.drawBitmap(bitmap, 0, 0, null);
+    }
+
+    public void setTouchPoint(float x, float y, String style) {
+        MyPoint touchPoint = new MyPoint();
+        a.x = x;
+        a.y = y;
+        this.style = style;
+        switch (style) {
+            case STYLE_TOP_RIGHT:
+            case STYLE_LOWER_RIGHT:{
+                if (STYLE_LOWER_RIGHT.equals(style)) {
+                    f.x = viewWidth;
+                    f.y = viewHeight;
+                } else if (STYLE_TOP_RIGHT.equals(style)) {
+                    f.x = viewWidth;
+                    f.y = 0;
+                }
+                calcPointsXY(a, f);
+
+                touchPoint.x = x;
+                touchPoint.y = y;
+                if (calcPointC(touchPoint, f) > 0) {//按照实际书本的模型，左边是装订的，不能被翻起来
+
+                } else {
+                    calcPointAByTouchPoint(touchPoint);
+                    calcPointsXY(a, f);
+                }
+
+                postInvalidate();
+                break;
+            }
+            case STYLE_RIGHT:
+            case STYLE_LEFT:{
+                a.y = viewHeight - 1;
+                f.x = viewWidth;
+                f.y = viewHeight;
+                calcPointsXY(a, f);
+                postInvalidate();
+                break;
+            }
+            case STYLE_MIDDLE:{
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 回到默认状态
+     */
+    public void setPathDefault() {
+        a.x = -1;
+        a.y = -1;
+
+        postInvalidate();
+    }
+
+    private Path getPathDefault() {
+        pathA.reset();
+        ;
+        pathA.lineTo(0, viewHeight);
+        pathA.lineTo(viewWidth, viewHeight);
+        pathA.lineTo(viewWidth, 0);
+        pathA.close();
+        return pathA;
     }
 
     private Path getPathB() {
@@ -202,19 +292,50 @@ public class BookPageView extends View {
 
     /**
      * 获取f点在右上角的pathA
+     *
      * @return
      */
-    private Path getPathAFromTopRight(){
+    private Path getPathAFromTopRight() {
         pathA.reset();
-        pathA.lineTo(c.x,c.y);//移动到c点
-        pathA.quadTo(e.x,e.y,b.x,b.y);//从c到b画贝塞尔曲线，控制点为e
-        pathA.lineTo(a.x,a.y);//移动到a点
-        pathA.lineTo(k.x,k.y);//移动到k点
-        pathA.quadTo(h.x,h.y,j.x,j.y);//从k到j画贝塞尔曲线，控制点为h
-        pathA.lineTo(viewWidth,viewHeight);//移动到右下角
+        pathA.lineTo(c.x, c.y);//移动到c点
+        pathA.quadTo(e.x, e.y, b.x, b.y);//从c到b画贝塞尔曲线，控制点为e
+        pathA.lineTo(a.x, a.y);//移动到a点
+        pathA.lineTo(k.x, k.y);//移动到k点
+        pathA.quadTo(h.x, h.y, j.x, j.y);//从k到j画贝塞尔曲线，控制点为h
+        pathA.lineTo(viewWidth, viewHeight);//移动到右下角
         pathA.lineTo(0, viewHeight);//移动到左下角
         pathA.close();
         return pathA;
+    }
+
+    /**
+     * 当c.x的坐标小与0之后，重新计算a点坐标，为了保持跟手势同步，不产生停顿不动的情况
+     */
+    private void calcPointAByTouchPoint(MyPoint touchPoint){
+        float w0 = viewWidth - c.x;
+        float w1 = Math.abs(f.x - a.x);//viewWidth - touchPoint.x;
+        float w2 = viewWidth * w1 / w0;
+        a.x = Math.abs(f.x - w2);//viewWidth - w2;
+
+        float h1 = Math.abs(f.y - touchPoint.y);
+        float h2 = w2 * h1 / w1;
+        a.y = Math.abs(f.y - h2);
+    }
+
+    /**
+     * 计算c点横向坐标
+     * @return
+     */
+    private float calcPointC(MyPoint a, MyPoint f){
+        MyPoint g = new MyPoint();
+        MyPoint e = new MyPoint();
+        g.x = (a.x + f.x) / 2;
+        g.y = (a.y + f.y) / 2;
+
+        e.x = g.x - (f.y - g.y) * (f.y - g.y) / (f.x - g.x);
+
+        float x = (3 * e.x - f.x) / 2;//f.x-3 / 2 * (f.x-e.x);
+        return x;
     }
 
     /**
@@ -272,5 +393,13 @@ public class BookPageView extends View {
                 / ((y1 - y2) * (x3 - x4) - (x1 - x2) * (y3 - y4));
 
         return new MyPoint(pointX, pointY);
+    }
+
+    public float getViewWidth() {
+        return viewWidth;
+    }
+
+    public float getViewHeight() {
+        return viewHeight;
     }
 }
