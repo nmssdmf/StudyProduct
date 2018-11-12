@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
-import com.nmssdmf.commonlib.util.ToastUtil;
+import com.nmssdmf.commonlib.util.JLog;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
 import com.nmssdmf.testmodule.R;
 import com.nmssdmf.testmodule.databinding.ActivityBookPageBinding;
@@ -39,6 +39,7 @@ public class BookPageActivity extends BaseTitleActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 float x = event.getX();
                 float y = event.getY();
+                JLog.d(TAG, "event.getAction() = " + event.getAction());
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
                         float width = binding.bpv.getViewWidth();
@@ -48,24 +49,19 @@ public class BookPageActivity extends BaseTitleActivity {
                         float bottom = height * 2 / 3;
                         float left = width / 3;
                         if (x <= left) {//在左边
-                            ToastUtil.getInstance().showToast("左边");
 //                            style = BookPageView.STYLE_LEFT;
 //                            binding.bpv.setTouchPoint(x, y, style);
                         } else if (x > right && y < top) {//在右上角
-                            ToastUtil.getInstance().showToast("右上");
                             style = BookPageView.STYLE_TOP_RIGHT;
                             binding.bpv.setTouchPoint(x, y, style);
                         } else if (x > right && y > top && y < bottom) {//右边中间
-                            ToastUtil.getInstance().showToast("右边");
                             style = BookPageView.STYLE_RIGHT;
                             binding.bpv.setTouchPoint(x, y, style);
                         } else if (x > right && y > bottom) {//右下角
-                            ToastUtil.getInstance().showToast("右下");
                             style = BookPageView.STYLE_LOWER_RIGHT;
                             binding.bpv.setTouchPoint(x, y, style);
-                        } else if (x > left && x < right && y > top && y < bottom) {//中间
+                        } else if (x > left && x < right /*&& y > top && y < bottom*/) {//中间
                             style = BookPageView.STYLE_MIDDLE;
-                            ToastUtil.getInstance().showToast("中间");
                         }
                         break;
                     }
@@ -74,6 +70,7 @@ public class BookPageActivity extends BaseTitleActivity {
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
+                        JLog.d(TAG, "MotionEvent.ACTION_UP");
                         binding.bpv.startCancelAnim();
                         break;
                     }
