@@ -17,8 +17,8 @@ import io.reactivex.disposables.Disposable;
  * 3、通过订阅（Subscribe）连接观察者和被观察者
  * 大神教程：@https://blog.csdn.net/carson_ho/article/list/4
  */
-public class RxJavaActivity extends AppCompatActivity {
-    private final String TAG = RxJavaActivity.class.getSimpleName();
+public class RxJavaActivity1 extends AppCompatActivity {
+    private final String TAG = RxJavaActivity1.class.getSimpleName();
     Integer i = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
