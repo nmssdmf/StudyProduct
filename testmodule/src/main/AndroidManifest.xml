@@ -22,7 +22,6 @@
         <activity android:name=".rxjava.RxJavaActivity1">
         </activity>
         <activity android:name=".rxjava.RxJavaActivity2">
-
         </activity>
         <activity android:name=".rxjava.RxJavaActivity3">
             <intent-filter>
@@ -30,6 +29,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".tangram.TangramActivity">
         </activity>
     </application>
 
