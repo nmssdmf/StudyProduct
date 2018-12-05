@@ -73,5 +73,20 @@ public class RxJavaActivity3 extends AppCompatActivity {
                 JLog.d(TAG, "s = " + s);
             }
         });
+
+        Observable.just(1, 2, 3, 4, 5, 6)
+                // 设置缓存区大小 & 步长
+                // 缓存区大小 = 每次从被观察者中获取的事件数量
+                // 步长 = 每次获取新事件的数量
+                .buffer(3, 1)
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(List<Integer> integers) throws Exception {
+                        JLog.d(TAG, "integers = " + integers.size());
+                        for (Integer value : integers) {
+                            JLog.d(TAG, "事件 = " + value);
+                        }
+                    }
+                });
     }
 }
