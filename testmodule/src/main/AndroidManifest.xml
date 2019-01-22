@@ -3,6 +3,16 @@
           package="com.nmssdmf.testmodule">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.robert.permission.READ_CONTENTPROVIDER"/>
+
+    <!-- socket 通信 -->
+    <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <permission
+        android:name="com.nmssdmf.permission.READ_CONTENTPROVIDER"
+        android:label="Allow read content provider"
+        android:protectionLevel="normal"/>
 
     <application
         android:name=".application.App"
@@ -15,10 +25,21 @@
         <service
             android:name=".service.TestService"
             android:process=":remote1"/>
-        <service android:name=".aidl.AIDLService"
-                 android:process=":remote4"/>
-        <service android:name=".aidl.MessengerService"
-                 android:process=":remote5"/>
+        <service
+            android:name=".aidl.AIDLService"
+            android:process=":remote4"/>
+        <service
+            android:name=".aidl.MessengerService"
+            android:process=":remote5"/>
+        <service
+            android:name=".ipc.socket.SocketSerivce"
+            android:process=":scoket"/>
+
+        <provider
+            android:name=".ipc.contentprovider.BookProvider"
+            android:authorities="com.nmssdmf.testmodule.ipc.contentprovider.bookprovider"
+            android:permission="com.nmssdmf.permission.READ_CONTENTPROVIDER"
+            android:process=":provider"/>
 
         <activity android:name=".activity.TestMainActivity"/>
         <activity android:name=".touchevent.TouchActivity"/>
@@ -34,19 +55,26 @@
         <activity android:name=".rxjava.RxjavaActivity4">
         </activity>
         <activity android:name=".service.TestServiceActivity">
-
         </activity>
         <activity
             android:name=".ipc.RemoteOneActivity"
             android:process=":remote2">
+        </activity>
+        <activity
+            android:name=".ipc.RemoteTwoActivity"
+            android:process=":remote3">
+        </activity>
+        <activity android:name=".ipc.contentprovider.ProviderActivity">
+        </activity>
+        <activity android:name=".ipc.socket.SocketActivity">
+        </activity>
+
+        <activity android:name=".touchevent.touchsolve.TouchSolveActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".ipc.RemoteTwoActivity"
-            android:process=":remote3">
         </activity>
     </application>
 
