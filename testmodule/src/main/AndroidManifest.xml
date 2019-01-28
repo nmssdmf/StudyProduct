@@ -68,8 +68,12 @@
         </activity>
         <activity android:name=".ipc.socket.SocketActivity">
         </activity>
-
         <activity android:name=".touchevent.touchsolve.TouchSolveActivity">
+
+        </activity>
+        <activity
+            android:name=".rtsp.RtspActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
