@@ -1,22 +1,19 @@
 package com.nmssdmf.testmodule.activity;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
+import android.view.View;
 
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
-import com.nmssdmf.customerviewlib.OnDataChangeListener;
+import com.nmssdmf.customerviewlib.BaseQuickAdapter;
 import com.nmssdmf.testmodule.R;
+import com.nmssdmf.testmodule.ThreadPoolExecutor.ThreadPoolExecutorActivity;
 import com.nmssdmf.testmodule.adapter.MainAdapter;
 import com.nmssdmf.testmodule.bean.MainBean;
 import com.nmssdmf.testmodule.callback.MainCB;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
 import com.nmssdmf.testmodule.viewmodel.MainVM;
-
-import java.util.List;
 
 public class TestMainActivity extends BaseTitleActivity implements MainCB{
 
@@ -45,25 +42,12 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
     public void initContent(Bundle savedInstanceState) {
         binding = (ActivityTestMainBinding) baseViewBinding;
         hideNavigation();
+
+        vm.initList();
         adapter = new MainAdapter(vm.getList());
         binding.crv.setAdapter(adapter);
-        binding.crv.setOnDataChangeListener(new OnDataChangeListener() {
-            @Override
-            public void onRefresh() {
-                vm.initList(true);
-            }
 
-            @Override
-            public void onLoadMore() {
-                vm.initList(false);
-            }
-        });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                vm.initList(false);
-            }
-        });
+        onListener();
     }
 
     @Override
@@ -71,13 +55,23 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
         return R.layout.activity_test_main;
     }
 
-    @Override
-    public void refreshAdapter(final boolean isRefresh,final List<MainBean> list) {
-        new Handler().post(new Runnable() {
+
+    private void onListener(){
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void run() {
-                adapter.notifyDataChangedAfterLoadMore(isRefresh, list);
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                MainBean mainBean = vm.getList().get(position);
+                Class c = null;
+                switch (mainBean.getName()) {
+                    case "线程池":{
+                        c = ThreadPoolExecutorActivity.class;
+                        break;
+                    }
+                }
+                Intent intent = new Intent(TestMainActivity.this, c);
+                startActivity(intent);
             }
         });
     }
+
 }

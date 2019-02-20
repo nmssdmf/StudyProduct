@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.robert.permission.READ_CONTENTPROVIDER"/>
+    <!--文件读写-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <!-- socket 通信 -->
     <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
@@ -24,7 +28,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <service
             android:name=".service.TestService"
-            android:process=":remote1"/>
+            />
         <service
             android:name=".aidl.AIDLService"
             android:process=":remote4"/>
@@ -41,7 +45,13 @@
             android:permission="com.nmssdmf.permission.READ_CONTENTPROVIDER"
             android:process=":provider"/>
 
-        <activity android:name=".activity.TestMainActivity"/>
+        <activity android:name=".activity.TestMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".touchevent.TouchActivity"/>
         <activity
             android:name=".falling.FallingActivity"
@@ -69,16 +79,11 @@
         <activity android:name=".ipc.socket.SocketActivity">
         </activity>
         <activity android:name=".touchevent.touchsolve.TouchSolveActivity">
+        </activity>
+        <activity android:name=".rtsp.RtspActivity">
 
         </activity>
-        <activity
-            android:name=".rtsp.RtspActivity"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity">
         </activity>
     </application>
 

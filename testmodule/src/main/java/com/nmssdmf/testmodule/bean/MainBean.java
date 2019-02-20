@@ -13,6 +13,14 @@ public class MainBean extends BaseObservable{
     private String icon;
     private String name;
 
+    public MainBean(){
+
+    }
+
+    public MainBean(String name){
+        this.name = name;
+    }
+
     @Bindable
     public String getIcon() {
         return icon;

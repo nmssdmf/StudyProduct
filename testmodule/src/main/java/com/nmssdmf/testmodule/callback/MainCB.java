@@ -10,5 +10,4 @@ import java.util.List;
  */
 
 public interface MainCB extends BaseCB {
-    void refreshAdapter(boolean isRefresh, List<MainBean> list);
 }

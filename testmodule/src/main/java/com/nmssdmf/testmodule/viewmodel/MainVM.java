@@ -26,17 +26,8 @@ public class MainVM extends BaseVM {
         this.cb = callBack;
     }
 
-    public void initList(boolean isRefresh) {
-        if (isRefresh)
-            list.clear();
-        int size = list.size();
-        List<MainBean> addList = new ArrayList<>();
-        for (int i = size; i < size + 10; i++) {
-            MainBean bean = new MainBean();
-            bean.setName("第" + i + "个");
-            addList.add(bean);
-        }
-        cb.refreshAdapter(isRefresh, addList);
+    public void initList() {
+        list.add(new MainBean("线程池"));
     }
 
     public List<MainBean> getList() {

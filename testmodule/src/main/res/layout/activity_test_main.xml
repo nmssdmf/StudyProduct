@@ -11,8 +11,8 @@
             android:id="@+id/crv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:refresh_enable="true"
-            app:loadmore_enable="true"/>
+            app:refresh_enable="false"
+            app:loadmore_enable="false"/>
     </RelativeLayout>
 </layout>
 

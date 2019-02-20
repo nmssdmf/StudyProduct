@@ -2,6 +2,7 @@ package com.nmssdmf.commonlib.application;
 
 import android.app.Application;
 
+import com.nmssdmf.commonlib.util.PreferenceUtil;
 import com.nmssdmf.commonlib.util.ToastUtil;
 
 /**
@@ -14,5 +15,6 @@ public class BaseApplication extends Application {
         super.onCreate();
         //初始化Toast
         ToastUtil.getInstance().init(this);
+        PreferenceUtil.initialize(this);
     }
 }

@@ -7,19 +7,19 @@
         android:layout_height="100dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="100dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="360dp"
-                android:layout_height="100dp"
-                android:background="@color/red"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:background="@color/red"/>-->
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/green"/>
+            <!--<TextView-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="100dp"-->
+                <!--android:background="@color/green"/>-->
         </LinearLayout>
 
     </com.nmssdmf.testmodule.touchevent.touchsolve.TouchSolveView>
