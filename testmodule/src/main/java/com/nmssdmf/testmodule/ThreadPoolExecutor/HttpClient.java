@@ -1,12 +1,7 @@
 package com.nmssdmf.testmodule.ThreadPoolExecutor;
 
-import android.os.Environment;
-
-import com.nmssdmf.commonlib.util.JLog;
-
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -22,7 +17,7 @@ import okhttp3.Response;
 
 public class HttpClient {
     private final String TAG = HttpClient.class.getSimpleName();
-    private final int M = 1024*1024*5;
+
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -31,6 +26,10 @@ public class HttpClient {
 
         builder.addNetworkInterceptor(new HeaderInterceptor());
         builder.addInterceptor(new LogInterceptor());
+        builder.connectTimeout(60, TimeUnit.SECONDS);
+        builder.readTimeout(60, TimeUnit.SECONDS);
+        builder.writeTimeout(60, TimeUnit.SECONDS);
+        builder.retryOnConnectionFailure(true);
         return builder.build();
     }
 
@@ -42,47 +41,26 @@ public class HttpClient {
                 .url(url)
                 .head()
                 .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-                httpResponseCall.onFailure();
-                JLog.d(TAG, "onFailure");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                long length = Long.parseLong(response.header("content-length")) - 1;
-                JLog.d(TAG, "response:" + length);
-                long count = length / M + 1;//一次下载大小
-                JLog.d(TAG, "count:" + count);
-                for (int i = 0; i < count; i++) {
-                    long start, end;
-                    if (i == count - 1) {
-                        end = length;
-                    } else {
-                        end = (i+1)*M - 1;
-                    }
-                    start = i * M;
-                    doGetFile(url, new HttpResponseCall() {
-                        @Override
-                        public void onFailure() {
-
-                        }
-
-                        @Override
-                        public void onResponseError() {
-
-                        }
-
-                        @Override
-                        public void onResponseSuccess() {
-
-                        }
-                    }, start, end, length);
-                }
-            }
-        });
+        try {
+            Response response = client.newCall(request).execute();
+            httpResponseCall.onResponseSuccess(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                call.cancel();
+//                httpResponseCall.onFailure();
+//                JLog.d(TAG, "onFailure");
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                httpResponseCall.onResponseSuccess(response);
+//                call.cancel();
+//            }
+//        });
     }
 
     /**
@@ -98,32 +76,25 @@ public class HttpClient {
                 .addHeader("Range", String.format("bytes=%d-%d", start, end))
                 .url(url)
                 .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-                httpResponseCall.onFailure();
-                JLog.d(TAG, "onFailure");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                JLog.d(TAG, String.format("fileCount %d-%d: response.code() = %d", start, end ,response.code()));
-                String fileName = Environment.getExternalStorageDirectory().getPath()+ File.separator+"nmssdmf.apk";
-                JLog.d(TAG, "fileName :" + fileName);
-//                byte[] bytes = response.body().bytes();
-//                FileUtil.appendFile(fileName, bytes, start, M);
-                synchronized (response) {
-                    JLog.d(TAG, "Thread.currentThread().getId()111 = " + Thread.currentThread().getId());
-                    InputStream inputStream = response.body().byteStream();
-                    JLog.d(TAG, "Thread.currentThread().getId()222 = " + Thread.currentThread().getId());
-//                response.close();
-                    FileUtil.appendFileWithInstram(fileName, inputStream, start, M);
-                    response.close();
-                    response.notify();
-                }
-            }
-        });
+        try {
+            Response  response = client.newCall(request).execute();
+            httpResponseCall.onResponseSuccess(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                call.cancel();
+//                httpResponseCall.onFailure();
+//                JLog.d(TAG, "onFailure");
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                httpResponseCall.onResponseSuccess(response);
+//            }
+//        });
     }
 
     public void doPost(String url, String json, final HttpResponseCall httpResponseCall){

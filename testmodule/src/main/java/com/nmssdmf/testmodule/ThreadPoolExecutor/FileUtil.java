@@ -81,74 +81,146 @@ public class FileUtil {
      * @param start       写入的初始位置
      * @param dLength     平均一段内容的长度,如：13M的文件，按照5M一部分下载，则每部分为5M
      */
-    public synchronized static void appendFileWithInstram(String fileName, InputStream inputStream, long start, long dLength) {
+    public  static void appendFileWithInstram(String fileName, InputStream inputStream, long start, long dLength) {
         File file = new File(fileName);
-        RandomAccessFile randomAccessFile = null;
-        JLog.d(TAG, "Thread.currentThread().getId()333 = " + Thread.currentThread().getId());
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            randomAccessFile = new RandomAccessFile(file, "rw");
-            long length = randomAccessFile.length();
-            final long M = 1024;
-            byte[] bytes = new byte[1024];
-            int k = 0;
-            long seek = 0;
-            long total = 0;
-            for (; ; ) {
-                int readCount = inputStream.read(bytes);
-                total += readCount;
-                JLog.d(TAG,  "total = " + total );
-                if (readCount == -1) {
-                    JLog.d(TAG, "readCount = " + readCount  );
-                    inputStream.close();
-                    break;
-                }
-                if (length == 0) {//还未写入过
-                    randomAccessFile.seek(k * M);
-                    randomAccessFile.write(bytes);
-                    ArrayList<Long> list = PreferenceUtil.getSerializables(fileName);
-                    if (list != null && list.size() > 0 && !list.contains(start)) {
-                        list.add(start);
-                        PreferenceUtil.setSerializables(fileName, list);
+        synchronized (TAG) {
+            try {
+                while (true) {
+                    long fileLength = PreferenceUtil.getLong(fileName, 0l);
+                    JLog.d("FileUtil", "fileLength = " + fileLength +"\n start = "+ start);
+                    if (fileLength == start) {
+                        break;
                     }
-//                    JLog.d(TAG, "1第" + k + "次写入");
-                } else {
-                    ArrayList<Long> list = PreferenceUtil.getSerializables(fileName);
-                    if (list != null && list.size() > 0 && !list.contains(start)) {
-                        int j = -1;
-                        for (int i = 0; i < list.size(); i++) {//比较已经写入的位置，找到准确的位置
-                            if (start > list.get(i)) {
-                                continue;
-                            } else {
-                                j = i;
-                            }
-                        }
-                        //找到的准确的位置之后，进行定位和写入,并且储存位置
-                        if (j == -1) {//最后一段
-                            list.add(start);
-                            seek = length;
-//                            randomAccessFile.seek(length + k * M);
-                        } else {
-                            list.add(j, start);
-                            seek = dLength * j;
-//                            randomAccessFile.seek(dLength * j + k * M);
-                        }
-//                        randomAccessFile.write(bytes);
-                    }
-                    randomAccessFile.seek(seek + k * M);
-                    randomAccessFile.write(bytes);
-//                    JLog.d(TAG, "2第" + k + "次写入");
+                    TAG.wait();
                 }
-                k += 1;
-//                JLog.d(TAG, "第" + k + "次写入");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            RandomAccessFile randomAccessFile = null;
+            JLog.d(TAG, "Thread.currentThread().getId()333 = " + Thread.currentThread().getId());
+            try {
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                randomAccessFile = new RandomAccessFile(file, "rw");
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+                final long M = 1024;
+                long total = PreferenceUtil.getLong(fileName, 0l);
+                for (; ; ) {
+                    byte[] bytes = new byte[(int) M];
+                    int readCount = inputStream.read(bytes);
+                    if (readCount == 0){
+                        continue;
+                    }
+                    if (readCount == -1) {
+                        JLog.d(TAG, "readCount = " + readCount + "\n start = " + start +"\ntotal = " + total);
+                        PreferenceUtil.setLongValue(fileName, total);
+                        inputStream.close();
+                        randomAccessFile.close();
+                        break;
+                    }
+
+                    randomAccessFile.seek(total);
+                    total += readCount;
+                    randomAccessFile.write(bytes, 0, readCount);
+                    JLog.d(TAG, "length = " + randomAccessFile.length());
+                    JLog.d(TAG, "total = " + total);
+                }
+
+                TAG.notifyAll();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+//    /**
+//     * 文件分批写入
+//     *
+//     * @param fileName    文件路径
+//     * @param inputStream 需要写入的内容
+//     * @param start       写入的初始位置
+//     * @param dLength     平均一段内容的长度,如：13M的文件，按照5M一部分下载，则每部分为5M
+//     */
+//    public synchronized static void appendFileWithInstram(String fileName, InputStream inputStream, long start, long dLength) {
+//        File file = new File(fileName);
+//        RandomAccessFile randomAccessFile = null;
+//        JLog.d(TAG, "Thread.currentThread().getId()333 = " + Thread.currentThread().getId());
+//        try {
+//            if (!file.exists()) {
+//                file.createNewFile();
+//            }
+//            randomAccessFile = new RandomAccessFile(file, "rw");
+//            long length = randomAccessFile.length();
+//            final long M = 1024;
+//            byte[] bytes = new byte[(int) M];
+//            int k = 0;
+//            long seek = 0;
+//            long total = 0;
+//            for (; ; ) {
+//                int readCount = inputStream.read(bytes);
+//                total += readCount;
+////                JLog.d(TAG,  "total = " + total );
+//                if (readCount == -1) {
+//                    JLog.d(TAG, "seek = " + (seek+k * M));
+//                    JLog.d(TAG, "readCount = " + readCount + "\n start = " + start + "\ntotal = " + total );
+//                    inputStream.close();
+//                    break;
+//                }
+//                if (length == 0) {//还未写入过
+//                    randomAccessFile.seek(k * M);
+//                    randomAccessFile.write(bytes);
+//                    ArrayList<Long> list = PreferenceUtil.getSerializables(fileName);
+//                    if (list == null) {
+//                        list = new ArrayList<>();
+//                    }
+//                    if (list != null && list.size() == 0 ) {
+//                        list.add(start);
+//                        PreferenceUtil.setSerializables(fileName, list);
+//                    }
+////                    JLog.d(TAG, "seek = " + (k * M));
+////                    JLog.d(TAG, "1第" + k + "次写入");
+//                } else {
+//                    ArrayList<Long> list = PreferenceUtil.getSerializables(fileName);
+//                    if (list != null && list.size() > 0 && !list.contains(start)) {
+//                        int j = -1;
+//                        for (int i = 0; i < list.size(); i++) {//比较已经写入的位置，找到准确的位置
+//                            if (start > list.get(i)) {
+//                                continue;
+//                            } else {
+//                                j = i;
+//                                break;
+//                            }
+//                        }
+//                        //找到的准确的位置之后，进行定位和写入,并且储存位置
+//                        if (j == -1) {//最后一段
+//                            list.add(start);
+//                            seek = randomAccessFile.length();
+////                            randomAccessFile.seek(length + k * M);
+//                        } else {
+//                            list.add(j, start);
+//                            seek = dLength * j;
+////                            randomAccessFile.seek(dLength * j + k * M);
+//                        }
+//                        PreferenceUtil.setSerializables(fileName, list);
+//                        JLog.d(TAG, "list = " + list.toString());
+////                        randomAccessFile.write(bytes);
+//                    }
+//                    randomAccessFile.seek(seek + k * M);
+//                    randomAccessFile.write(bytes);
+////                    JLog.d(TAG, "seek = " + (seek + k * M));
+////                    JLog.d(TAG, "2第" + k + "次写入");
+//                }
+//                k += 1;
+////                JLog.d(TAG, "第" + k + "次写入");
+//            }
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

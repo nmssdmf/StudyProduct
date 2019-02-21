@@ -18,7 +18,7 @@ public class HeaderInterceptor implements Interceptor {
         Request.Builder builder = chain.request().newBuilder();
         //add header info
         builder.addHeader("Accept-Encoding", "identity");//确保请求能够获取文件长度s
-
+        builder.addHeader("Connection","close");
         Response response = chain.proceed(builder.build());
         return response;
     }
