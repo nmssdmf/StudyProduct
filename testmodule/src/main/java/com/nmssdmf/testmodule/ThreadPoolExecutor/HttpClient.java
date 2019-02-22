@@ -68,7 +68,7 @@ public class HttpClient {
      * @param url
      * @param httpResponseCall
      */
-    public void doGetFile(String url, final HttpResponseCall httpResponseCall, final long start, final long end, long all){
+    public void doGetFile(String url, final HttpResponseCall httpResponseCall, final long start, final long end){
         OkHttpClient client = createOkHttpClient();
 
         final Request request = new Request.Builder()

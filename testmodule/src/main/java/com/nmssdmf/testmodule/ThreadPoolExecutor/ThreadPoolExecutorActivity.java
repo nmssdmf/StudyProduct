@@ -66,7 +66,7 @@ public class ThreadPoolExecutorActivity extends AppCompatActivity implements Eas
                     if (file.exists()) {
                         file.delete();
                         file.createNewFile();
-                        JLog.d(TAG, "gif 文件删除");
+                        JLog.d(TAG, "文件删除");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -88,19 +88,19 @@ public class ThreadPoolExecutorActivity extends AppCompatActivity implements Eas
 
                             @Override
                             public void onResponseSuccess(Response response) {
-                                long length = Long.parseLong(response.header("content-length")) - 1;
+                                long length = Long.parseLong(response.header("content-length"));
                                 JLog.d(TAG, "response:" + length);
                                 long count = length / M + 1;//一次下载大小
                                 JLog.d(TAG, "count:" + count);
                                 for (int i = 0; i < count; i++) {
                                     long start, end;
                                     if (i == count - 1) {
-                                        end = length;
+                                        end = length - 1;
                                     } else {
                                         end = (i + 1) * M - 1;
                                     }
                                     start = i * M;
-                                    getFile(start, end, length);
+                                    getFile(start, end);
                                 }
                             }
                         });
@@ -111,7 +111,7 @@ public class ThreadPoolExecutorActivity extends AppCompatActivity implements Eas
         });
     }
 
-    public void getFile(final long start, final long end, final long length) {
+    public void getFile(final long start, final long end) {
         executorService.submit(new Runnable() {
             @Override
             public void run() {
@@ -131,11 +131,10 @@ public class ThreadPoolExecutorActivity extends AppCompatActivity implements Eas
                         JLog.d(TAG, String.format("fileCount %d-%d: response.code() = %d", start, end, response.code()));
                         JLog.d(TAG, "Thread.currentThread().getId()111 = " + Thread.currentThread().getId());
                         InputStream inputStream = response.body().byteStream();
-                        FileUtil.appendFileWithInstram(FILE_NAME, inputStream, start, M);
-                        response.close();
+                        FileUtil.appendFileWithInstram(FILE_NAME, inputStream, start);
                         response.notify();
                     }
-                }, start, end, length);
+                }, start, end);
             }
         });
 
