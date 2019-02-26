@@ -4,10 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.robert.permission.READ_CONTENTPROVIDER"/>
-    <!--文件读写-->
+    <!-- 文件读写 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
 
     <!-- socket 通信 -->
     <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
@@ -26,9 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <service
-            android:name=".service.TestService"
-            />
+        <service android:name=".service.TestService"/>
         <service
             android:name=".aidl.AIDLService"
             android:process=":remote4"/>
@@ -58,12 +55,6 @@
             android:label="@string/title_activity_falling"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".bookpage.BookPageActivity"/>
-        <activity android:name=".rxjava.RxJavaActivity1"/>
-        <activity android:name=".rxjava.RxJavaActivity2">
-        </activity>
-        <activity android:name=".rxjava.RxJavaActivity3"/>
-        <activity android:name=".rxjava.RxjavaActivity4">
-        </activity>
         <activity android:name=".service.TestServiceActivity">
         </activity>
         <activity
@@ -81,9 +72,10 @@
         <activity android:name=".touchevent.touchsolve.TouchSolveActivity">
         </activity>
         <activity android:name=".rtsp.RtspActivity">
-
         </activity>
         <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity">
+        </activity>
+        <activity android:name=".rxjava.RxJavaActivity">
         </activity>
     </application>
 

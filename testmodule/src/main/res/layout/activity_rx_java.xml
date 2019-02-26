@@ -5,6 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nmssdmf.testmodule.rxjava.RxJavaActivity1">
+    tools:context="com.nmssdmf.testmodule.rxjava.RxJavaActivity">
+
+    <com.nmssdmf.customerviewlib.CustomerRecyclerView
+        android:id="@+id/crv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:refresh_enable="false"
+        app:loadmore_enable="false">
+
+    </com.nmssdmf.customerviewlib.CustomerRecyclerView>
 
 </android.support.constraint.ConstraintLayout>

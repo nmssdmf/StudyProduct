@@ -13,6 +13,7 @@ import com.nmssdmf.testmodule.adapter.MainAdapter;
 import com.nmssdmf.testmodule.bean.MainBean;
 import com.nmssdmf.testmodule.callback.MainCB;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
+import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
 import com.nmssdmf.testmodule.viewmodel.MainVM;
 
 public class TestMainActivity extends BaseTitleActivity implements MainCB{
@@ -63,8 +64,12 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                 MainBean mainBean = vm.getList().get(position);
                 Class c = null;
                 switch (mainBean.getName()) {
-                    case "线程池":{
+                    case "多线程文件下载":{
                         c = ThreadPoolExecutorActivity.class;
+                        break;
+                    }
+                    case "rxjava":{
+                        c = RxJavaActivity.class;
                         break;
                     }
                 }

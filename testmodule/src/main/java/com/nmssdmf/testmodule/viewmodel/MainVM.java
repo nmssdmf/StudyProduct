@@ -27,7 +27,8 @@ public class MainVM extends BaseVM {
     }
 
     public void initList() {
-        list.add(new MainBean("线程池"));
+        list.add(new MainBean("多线程文件下载"));
+        list.add(new MainBean("rxjava"));
     }
 
     public List<MainBean> getList() {
