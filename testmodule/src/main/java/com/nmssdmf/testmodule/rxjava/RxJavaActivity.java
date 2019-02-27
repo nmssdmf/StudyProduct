@@ -10,11 +10,18 @@ import com.nmssdmf.customerviewlib.BaseQuickAdapter;
 import com.nmssdmf.customerviewlib.CustomerRecyclerView;
 import com.nmssdmf.testmodule.R;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -24,6 +31,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class RxJavaActivity extends AppCompatActivity {
     private final String TAG = RxJavaActivity.class.getSimpleName();
@@ -48,7 +56,7 @@ public class RxJavaActivity extends AppCompatActivity {
         });
     }
 
-    private void initList(){
+    private void initList() {
         list.add("rxJava基本使用");
         list.add("基于事件流的链式调用");
         list.add("Disposable切断连接");
@@ -57,46 +65,56 @@ public class RxJavaActivity extends AppCompatActivity {
         list.add("过滤操作符");
         list.add("条件操作符");
         list.add("变换操作符");
+        list.add("功能性操作符");
+        list.add("背压");
     }
 
-    private void itemClick(String data){
+    private void itemClick(String data) {
         switch (data) {
-            case "rxJava基本使用":{
+            case "rxJava基本使用": {
                 rxJava_1();
                 break;
             }
-            case "基于事件流的链式调用":{
+            case "基于事件流的链式调用": {
                 rxJava_2();
                 break;
             }
-            case "Disposable切断连接":{
+            case "Disposable切断连接": {
                 rxJava_3();
                 break;
             }
-            case "rxjava创建操作符":{
+            case "rxjava创建操作符": {
                 rxJava_4();
                 break;
             }
-            case "组合/合并操作符":{
+            case "组合/合并操作符": {
                 rxJava_5();
                 break;
             }
-            case "过滤操作符":{
+            case "过滤操作符": {
                 rxJava_6();
                 break;
             }
-            case "条件操作符":{
+            case "条件操作符": {
                 rxJava_7();
                 break;
             }
-            case "变换操作符":{
+            case "变换操作符": {
                 rxJava_8();
+                break;
+            }
+            case "功能性操作符": {
+                rxjava_9();
+                break;
+            }
+            case "背压": {
+                rxjava_10();
                 break;
             }
         }
     }
 
-    private void rxJava_1(){
+    private void rxJava_1() {
         //创建被观察者Observable对象
         //方法1：create
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
@@ -159,7 +177,7 @@ public class RxJavaActivity extends AppCompatActivity {
         observable2.subscribe(observer);
     }
 
-    private void rxJava_2(){
+    private void rxJava_2() {
         Observable.just("A", "B", "C")
                 .subscribe(new Observer<String>() {
                     @Override
@@ -169,7 +187,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(String s) {
-                        Log.d(TAG, "对Next事件"+ s +"作出响应"  );
+                        Log.d(TAG, "对Next事件" + s + "作出响应");
                     }
 
                     @Override
@@ -187,12 +205,12 @@ public class RxJavaActivity extends AppCompatActivity {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        Log.d(TAG, "对Next事件"+ s +"作出响应"  );
+                        Log.d(TAG, "对Next事件" + s + "作出响应");
                     }
                 });
     }
 
-    private void rxJava_3(){
+    private void rxJava_3() {
         //可采用 Disposable.dispose() 切断观察者 与 被观察者 之间的连接
         Observable.just("A", "B", "C")
                 .subscribe(new Observer<String>() {
@@ -207,7 +225,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(String s) {
-                        Log.d(TAG, "对Next事件"+ s +"作出响应"  );
+                        Log.d(TAG, "对Next事件" + s + "作出响应");
                         if (s.equals("B")) {
                             disposable.dispose();
                         }
@@ -225,7 +243,7 @@ public class RxJavaActivity extends AppCompatActivity {
                 });
     }
 
-    private void rxJava_4(){
+    private void rxJava_4() {
         //1.通过create（）创建被观察者对象
         Observable.create(new ObservableOnSubscribe<String>() {
             // 2. 在复写的subscribe（）里定义需要发送的事件
@@ -247,7 +265,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
             @Override
             public void onNext(String s) {
-                Log.d(TAG, "接收到了事件"+ s  );
+                Log.d(TAG, "接收到了事件" + s);
             }
 
             @Override
@@ -262,11 +280,11 @@ public class RxJavaActivity extends AppCompatActivity {
         });
 
         //just()快速创建，发送事件
-        Observable.just(1,2,3,4);
+        Observable.just(1, 2, 3, 4);
 
         //fromArray,直接发送传入的数组数据
         ////直接传入list，会把整个list当做一个数据发送
-        Integer[] items = {1,2,3,4};
+        Integer[] items = {1, 2, 3, 4};
         Observable.fromArray(items);
 
         //fromIterable 集合元素遍历
@@ -311,14 +329,15 @@ public class RxJavaActivity extends AppCompatActivity {
 
         //rangeLong 类似于range（），区别在于该方法支持数据类型 = Long
     }
+
     Integer i = 10;
 
-    private void rxJava_5(){
+    private void rxJava_5() {
         //组合操作符
         // concat（）：组合多个被观察者（≤4个）(串行)一起发送数据,结果1,2,3,4, 当发送error事件时，后面将停止发送其他事件
-        Observable.concat(Observable.just(1,2), Observable.just(3, 4));
+        Observable.concat(Observable.just(1, 2), Observable.just(3, 4));
         // concatArray（）：组合多个被观察者一起发送数据（可＞4个）结果1,2,3,4,5
-        Observable.concatArray(Observable.just(1), Observable.just(2), Observable.just(3), Observable.just(4),Observable.just(5));
+        Observable.concatArray(Observable.just(1), Observable.just(2), Observable.just(3), Observable.just(4), Observable.just(5));
         //concatDelayError（）如果第一个发送了error事件，并不影响其他的被观察者发送事件
         //firstElement()//从串行队列依次按顺序遍历事件，取出数据，如果取到，则发送事件，停止遍历。使用场景，从内存，缓存，网络中获取数据，取到则停止
 
@@ -332,7 +351,7 @@ public class RxJavaActivity extends AppCompatActivity {
         Observable.zip(Observable.just(1), Observable.just(2), new BiFunction<Integer, Integer, Integer>() {
             @Override
             public Integer apply(Integer integer, Integer integer2) throws Exception {
-                return integer+integer2;
+                return integer + integer2;
             }
         }).subscribe(new Observer<Integer>() {
             @Override
@@ -342,7 +361,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
             @Override
             public void onNext(Integer integer) {
-                JLog.d(TAG, "integer" +integer);
+                JLog.d(TAG, "integer" + integer);
             }
 
             @Override
@@ -360,7 +379,7 @@ public class RxJavaActivity extends AppCompatActivity {
         Observable.combineLatest(
                 Observable.just(1L, 2L, 3L), // 第1个发送数据事件的Observable
                 Observable.intervalRange(0, 3, 1, 1, TimeUnit.SECONDS), // 第2个发送数据事件的Observable：从0开始发送、共发送3个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
-                new BiFunction<Long, Long, Long>(){
+                new BiFunction<Long, Long, Long>() {
                     @Override
                     public Long apply(Long aLong, Long aLong2) throws Exception {
                         return aLong + aLong2;
@@ -369,7 +388,7 @@ public class RxJavaActivity extends AppCompatActivity {
         //combineLatestDelayError（）同concatDelayError（）
 
         //collect 将被观察者Observable发送的数据事件收集到一个数据结构里,结果，将1,2,3,4,5，6组成了list
-        Observable.just(1, 2, 3 ,4, 5, 6)
+        Observable.just(1, 2, 3, 4, 5, 6)
                 .collect(new Callable<ArrayList<Integer>>() {
                     @Override
                     public ArrayList<Integer> call() throws Exception {
@@ -381,12 +400,12 @@ public class RxJavaActivity extends AppCompatActivity {
                         integers.add(integer);
                     }
                 })
-        .subscribe(new Consumer<ArrayList<Integer>>() {
-            @Override
-            public void accept(ArrayList<Integer> integers) throws Exception {
+                .subscribe(new Consumer<ArrayList<Integer>>() {
+                    @Override
+                    public void accept(ArrayList<Integer> integers) throws Exception {
 
-            }
-        });
+                    }
+                });
 
         //startWith（） / startWithArray（）发送事件前追加事件,运行结果：1，2,3,0,4,5,6
         Observable.just(4, 5, 6)
@@ -398,10 +417,10 @@ public class RxJavaActivity extends AppCompatActivity {
                 .count();
     }
 
-    private void rxJava_6(){
+    private void rxJava_6() {
         //过滤操作符
         //filter根据条件过滤
-        Observable.just(1,2,3);
+        Observable.just(1, 2, 3);
 //                .filter(new Predicate<Integer>() {
 //                    @Override
 //                    public boolean test(Integer integer) throws Exception {
@@ -416,7 +435,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
 
         //ofType:根据类型过滤
-        Observable.just(1,2,"3");
+        Observable.just(1, 2, "3");
 //                .ofType(Integer.class)
 //                .subscribe(new Consumer<Integer>() {
 //                    @Override
@@ -427,7 +446,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
         //skip:顺数跳过
         //skipLast:倒数跳过
-        Observable.just(1,2,3);
+        Observable.just(1, 2, 3);
 //                .skip(1)
 //                .skipLast(1)
 //                .subscribe(new Consumer<Integer>() {
@@ -439,7 +458,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
         //distinct:过滤所有重复的信号
         //distinctUntilChanged:只有过滤连续重复的信号
-        Observable.just(11,11,22,22,33,22);
+        Observable.just(11, 11, 22, 22, 33, 22);
 //                .distinct()
 //                .distinctUntilChanged()
 //                .subscribe(new Consumer<Integer>() {
@@ -451,7 +470,7 @@ public class RxJavaActivity extends AppCompatActivity {
 
         //take：只接受前面指定的信号
         //takeLast:只接受后面指定的信号
-        Observable.just(1,2,3,4,5,6);
+        Observable.just(1, 2, 3, 4, 5, 6);
 //                .take(2)
 //                .takeLast(2)
 //                .subscribe(new Consumer<Integer>() {
@@ -498,7 +517,7 @@ public class RxJavaActivity extends AppCompatActivity {
         //lastElement: 仅取最后一个信号
         //elementAt:取指定序号的信号
         //elementAtOrError:在elementAt的基础上，当出现越界情况（即获取的位置索引 ＞ 发送事件序列长度）时，即抛出异常
-        Observable.just(1,2,3,4);
+        Observable.just(1, 2, 3, 4);
 //                .firstElement()
 //                .lastElement()
 //                .elementAt(2)
@@ -511,10 +530,10 @@ public class RxJavaActivity extends AppCompatActivity {
 
     }
 
-    private void rxJava_7(){
+    private void rxJava_7() {
         //条件操作符
         //all：将所有信号与指定条件作出判断，所有信号都成立，为true，否则为false
-        Observable.just(11,2,3,5);
+        Observable.just(11, 2, 3, 5);
 //                .all(new Predicate<Integer>() {
 //                    @Override
 //                    public boolean test(Integer integer) throws Exception {
@@ -529,7 +548,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
 
         //takeWhile设置指定条件，当元素满足条件则发送，若不满足，则停止发送后面所有信号
-        Observable.just(4,3,2,1,2);
+        Observable.just(4, 3, 2, 1, 2);
 //                .takeWhile(new Predicate<Integer>() {
 //                    @Override
 //                    public boolean test(Integer integer) throws Exception {
@@ -544,7 +563,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
 
         //skipWhile,当第一个条件为false时开发发送，后面的信号不再判断条件
-        Observable.just(2,3,1,2,3);
+        Observable.just(2, 3, 1, 2, 3);
 //                .skipWhile(new Predicate<Integer>() {
 //                    @Override
 //                    public boolean test(Integer integer) throws Exception {
@@ -559,7 +578,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
         //takeUntil 执行到满足条件之后，不再发送信号
         //当参数是Observable时，则当该Observable开始发信号的时候，停止
-        Observable.just(2,3,1,2,3);
+        Observable.just(2, 3, 1, 2, 3);
 //                .takeUntil(new Predicate<Integer>() {
 //                    @Override
 //                    public boolean test(Integer integer) throws Exception {
@@ -575,7 +594,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
 
         //skipUntil 直到Observable发送信号，才开始发送信号
-        Observable.intervalRange(0,10, 0, 1, TimeUnit.SECONDS);
+        Observable.intervalRange(0, 10, 0, 1, TimeUnit.SECONDS);
 //                .skipUntil(Observable.timer(5, TimeUnit.SECONDS))
 //                .subscribe(new Consumer<Long>() {
 //                    @Override
@@ -585,7 +604,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
 
         //sequenceEqual，判断两个Observable发送的信号是否一样
-        Observable.sequenceEqual(Observable.just(1,2,3), Observable.just(1,2));
+        Observable.sequenceEqual(Observable.just(1, 2, 3), Observable.just(1, 2));
 //                .subscribe(new Consumer<Boolean>() {
 //                    @Override
 //                    public void accept(Boolean aBoolean) throws Exception {
@@ -594,7 +613,7 @@ public class RxJavaActivity extends AppCompatActivity {
 //                });
 
         //contains判断是否包含指定数据
-        Observable.just(1,2,3,4);
+        Observable.just(1, 2, 3, 4);
 //                .contains(3)
 //                .subscribe(new Consumer<Boolean>() {
 //                    @Override
@@ -615,8 +634,8 @@ public class RxJavaActivity extends AppCompatActivity {
 
         //amb只发送第一个先发送信号的Obserable
         List<Observable<Integer>> list = new ArrayList<>();
-        list.add(Observable.just(1,3).delay(100, TimeUnit.MILLISECONDS));
-        list.add(Observable.just(2,4));
+        list.add(Observable.just(1, 3).delay(100, TimeUnit.MILLISECONDS));
+        list.add(Observable.just(2, 4));
         Observable.amb(list);
 //                .subscribe(new Consumer<Integer>() {
 //                    @Override
@@ -635,10 +654,10 @@ public class RxJavaActivity extends AppCompatActivity {
 
     }
 
-    private void rxJava_8(){
+    private void rxJava_8() {
         //变换操作符
         //map:数据类型转换
-        Observable.just(1,2,3)
+        Observable.just(1, 2, 3)
 //                .map(new Function<Integer, String>() {
 //                    @Override
 //                    public String apply(Integer integer) throws Exception {
@@ -685,6 +704,271 @@ public class RxJavaActivity extends AppCompatActivity {
                     @Override
                     public void accept(List<Integer> integers) throws Exception {
                         JLog.d(TAG, "integers = " + integers.toString());
+                    }
+                });
+    }
+
+    private void rxjava_9() {
+        //功能性操作符
+        //delay:指定延迟时间发送
+        Observable.just(1, 2, 3);
+//                .delay(1, TimeUnit.SECONDS)
+//                .subscribe(new Consumer<Integer>() {
+//                    @Override
+//                    public void accept(Integer integer) throws Exception {
+//                        JLog.d(TAG, "integer = " + integer);
+//                    }
+//                });
+
+        //doOnEach:每次发送信号都会执行,并且在发送信号之前执行,并且在doOnnex之前，包括complete信号
+//                .doOnEach(new Consumer<Notification<Integer>>() {
+//                    @Override
+//                    public void accept(Notification<Integer> integerNotification) throws Exception {
+//                        Log.d(TAG, "doOnEach: " + integerNotification.getValue());
+//                    }
+//                })
+//                //doOnNext在onNext信号发送之前调用
+//                .doOnNext(new Consumer<Integer>() {
+//                    @Override
+//                    public void accept(Integer integer) throws Exception {
+//                        Log.d(TAG, "doOnNext: " + integer);
+//                    }
+//                })
+//                //doAfterNext:在onnext信号发送之后调用
+//                .doAfterNext(new Consumer<Integer>() {
+//                    @Override
+//                    public void accept(Integer integer) throws Exception {
+//                        Log.d(TAG, "doAfterNext: " + integer);
+//                    }
+//                })
+//                //doOnComplete:信号正常发送完成调用
+//                .doOnComplete(new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        Log.d(TAG, "doOnComplete: ");
+//                    }
+//                })
+//                //doOnError:当发送错误信号时调用
+//                .doOnError(new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable throwable) throws Exception {
+//                        Log.d(TAG, "doOnError: " + throwable.getMessage());
+//                    }
+//                })
+//                //doOnSubscribe:当订阅的时候调用
+//                .doOnSubscribe(new Consumer<Disposable>() {
+//                    @Override
+//                    public void accept(Disposable disposable) throws Exception {
+//                        Log.d(TAG, "doOnSubscribe: ");
+//                    }
+//                })
+//                //doAfterTerminate:当事件发送完毕时调用,不管正常还是异常,调用时机在finally之后
+//                .doAfterTerminate(new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        Log.d(TAG, "doAfterTerminate: ");
+//                    }
+//                })
+//                //doFinally:最后执行
+//                .doFinally(new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        Log.d(TAG, "doFinally: ");
+//                    }
+//                })
+//                .subscribe(new Consumer<Integer>() {
+//                    @Override
+//                    public void accept(Integer integer) throws Exception {
+//                        JLog.d(TAG, "integer = " + integer);
+//                    }
+//                });
+
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                emitter.onNext(1);
+                emitter.onError(new Exception("发送错误"));
+            }
+        });
+        //onErrorReturn当发onError信号的时候调用，处理错误，并返回数据
+//                .onErrorReturn(new Function<Throwable, Integer>() {
+//                    @Override
+//                    public Integer apply(Throwable throwable) throws Exception {
+//                        Log.d(TAG, "在onErrorReturn处理了错误: " + throwable.toString());
+//                        return 2;
+//                    }
+//                })
+        //onErrorResumeNext:当发送onError信号时候调用，重新发送一个信号
+//                .onErrorResumeNext(new Observable<Integer>() {
+//                    @Override
+//                    protected void subscribeActual(Observer<? super Integer> observer) {
+//                        observer.onNext(3);
+//                    }
+//                })
+        //onExceptionResumeNext:只能接受Exception的error，当error之后，重新发送信号
+//                .onExceptionResumeNext(new Observable<Integer>() {
+//                    @Override
+//                    protected void subscribeActual(Observer<? super Integer> observer) {
+//                        observer.onNext(3);
+//                    }
+//                })
+        //retry：当发生error时，重新发送信号
+        //retry(1)：指定重试次数
+        //retry(new Predicate):出现错误后，判断是否需要重新发送数据
+//                .retry(new Predicate<Throwable>() {
+//                    @Override
+//                    public boolean test(Throwable throwable) throws Exception {
+//                        return false;
+//                    }
+//                })
+        //retryUntil:出现错误后，判断是否需要重新发送数据
+//                .retryUntil(new BooleanSupplier() {
+//                    @Override
+//                    public boolean getAsBoolean() throws Exception {
+//                        return false;
+//                    }
+//                })
+        //// 遇到error事件才会回调
+//                .retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
+//                    @Override
+//                    public ObservableSource<?> apply(Observable<Throwable> throwableObservable) throws Exception {
+//                        // 参数Observable<Throwable>中的泛型 = 上游操作符抛出的异常，可通过该条件来判断异常的类型
+//                        // 返回Observable<?> = 新的被观察者 Observable（任意类型）
+//                        // 此处有两种情况：
+//                        // 1. 若 新的被观察者 Observable发送的事件 = Error事件，那么 原始Observable则不重新发送事件：
+//                        // 2. 若 新的被观察者 Observable发送的事件 = Next事件 ，那么原始的Observable则重新发送事件：
+//
+//                        return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+//                            @Override
+//                            public ObservableSource<?> apply(Throwable throwable) throws Exception {
+//                                // 1. 若返回的Observable发送的事件 = Error事件，则原始的Observable不重新发送事件
+//                                // 该异常错误信息可在观察者中的onError（）中获得
+////                                return Observable.error(new Throwable("retryWhen终止啦"));
+//                                // 2. 若返回的Observable发送的事件 = Next事件，则原始的Observable重新发送事件（若持续遇到错误，则持续重试）
+//                                 return Observable.timer(1000, TimeUnit.MILLISECONDS);//重新发送
+//                            }
+//                        });
+//                    }
+//                })
+//                .subscribe(new Observer<Integer>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        JLog.d(TAG, "integer = " + integer);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        JLog.d(TAG, "Throwable = " + e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+
+
+        Observable.just(1, 2, 3, 4)
+                //repeat:重复发送
+//                .repeat(2)
+                //repeatWhen,判断条件，重复一次发送
+                .repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(Observable<Object> objectObservable) throws Exception {
+                        return Observable.timer(1, TimeUnit.SECONDS);
+                    }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        JLog.d(TAG, "integer = " + integer);
+                    }
+                });
+
+    }
+
+    private void rxjava_10() {
+        //异步背压
+//        Flowable.create(new FlowableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(FlowableEmitter<Integer> emitter) throws Exception {
+//                JLog.d(TAG, "发送事件1");
+//                emitter.onNext(1);
+//                JLog.d(TAG, "发送事件2");
+//                emitter.onNext(2);
+//                JLog.d(TAG, "发送事件3");
+//                emitter.onNext(3);
+//                JLog.d(TAG, "发送事件4");
+//                emitter.onNext(4);
+//                JLog.d(TAG, "发送事件5");
+//                emitter.onNext(5);
+//                JLog.d(TAG, "发送事件完成");
+//                emitter.onComplete();
+//            }
+//        }, BackpressureStrategy.ERROR)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Integer>() {
+//                    @Override
+//                    public void onSubscribe(Subscription s) {
+//                        s.request(Long.MAX_VALUE);
+//                    }
+//
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        JLog.d(TAG, "接受事件" + integer);
+//                        try {
+//                            Thread.sleep(1000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+
+        Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> emitter) throws Exception {
+                long n = emitter.requested();
+                for (int i = 0; i< n;i++) {
+                    emitter.onNext(i);
+                }
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.ERROR)
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(3);
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        JLog.d(TAG, "接受事件" + integer);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
