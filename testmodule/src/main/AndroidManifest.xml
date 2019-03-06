@@ -77,6 +77,8 @@
         </activity>
         <activity android:name=".rxjava.RxJavaActivity">
         </activity>
+        <activity android:name=".sort.SortActivity">
+        </activity>
     </application>
 
 </manifest>

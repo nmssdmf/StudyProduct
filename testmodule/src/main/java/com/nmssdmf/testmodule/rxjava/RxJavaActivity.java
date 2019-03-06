@@ -123,29 +123,11 @@ public class RxJavaActivity extends AppCompatActivity {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 //通过 ObservableEmitter类对象产生事件并通知观察者
-                emitter.onNext("A1");
-                emitter.onNext("B1");
-                emitter.onNext("C1");
+                emitter.onNext("按门铃");
                 emitter.onComplete();
+
             }
         });
-
-        //方法2：just(T...)：直接将传入的参数依次发送出来
-        // 将会依次调用：
-        // onNext("A");
-        // onNext("B");
-        // onNext("C");
-        // onCompleted();
-        Observable observable1 = Observable.just("A2", "B2", "C2");
-
-        //方法3：fromArray, 将传入的数组 / Iterable 拆分成具体对象后，依次发送出来
-        // 将会依次调用：
-        // onNext("A");
-        // onNext("B");
-        // onNext("C");
-        // onCompleted();
-        String[] words = {"A3", "B3", "C3"};
-        Observable observable2 = Observable.fromArray(words);
 
         //创建Observer观察者对象
         //方法1：采用Observer接口
@@ -173,8 +155,6 @@ public class RxJavaActivity extends AppCompatActivity {
 
         //订阅
         observable.subscribe(observer);
-        observable1.subscribe(observer);
-        observable2.subscribe(observer);
     }
 
     private void rxJava_2() {
@@ -249,43 +229,34 @@ public class RxJavaActivity extends AppCompatActivity {
             // 2. 在复写的subscribe（）里定义需要发送的事件
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                emitter.onNext("createA");
-                emitter.onNext("createB");
-                emitter.onNext("createC");
+                emitter.onNext("1");
+                emitter.onNext("2");
+                emitter.onNext("3");
 
                 emitter.onComplete();
             }
-        }).subscribe(new Observer<String>() {
-            // 3. 通过通过订阅（subscribe）连接观察者和被观察者
-            // 4. 创建观察者 & 定义响应事件的行为
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.d(TAG, "开始采用subscribe连接");
-            }
-
-            @Override
-            public void onNext(String s) {
-                Log.d(TAG, "接收到了事件" + s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "对Error事件作出响应");
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "对Complete事件作出响应");
-            }
         });
+        ////log
+//        create = 1
+//        create = 2
+//        create = 3
 
         //just()快速创建，发送事件
-        Observable.just(1, 2, 3, 4);
+        Observable.just(1,2,3,4);
+        //log
+//        just = 1
+//        just = 2
+//        just = 3
+//        just = 4
 
         //fromArray,直接发送传入的数组数据
         ////直接传入list，会把整个list当做一个数据发送
         Integer[] items = {1, 2, 3, 4};
         Observable.fromArray(items);
+        //fromArray = 1
+//        fromArray = 2
+//        fromArray = 3
+//        fromArray = 4
 
         //fromIterable 集合元素遍历
         List<Integer> list = new ArrayList<>();
@@ -294,6 +265,10 @@ public class RxJavaActivity extends AppCompatActivity {
         list.add(3);
         list.add(4);
         Observable.fromIterable(list);
+        //      fromIterable = 1
+//                fromIterable = 2
+//                fromIterable = 3
+//                fromIterable = 4
 
         //empty 仅发送Complete事件，直接通知完成
 //        Observable.empty();
@@ -309,24 +284,52 @@ public class RxJavaActivity extends AppCompatActivity {
                 return Observable.just(i);
             }
         });
+        i = 11;
+        observable.subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                Log.d(TAG, "defer = " + integer);
+            }
+        });
+        //defer = 11
 
 
         //timer(),延迟制定的时间后，发送一个0
         //timer操作符默认运行在一个新线程上
         Observable.timer(2, TimeUnit.SECONDS);
+        //timer = 0
 
         //interval() 每隔指定时间 就发送 事件
         //interval默认在computation调度器上执行
         //延迟3s后发送事件，每隔1秒产生1个数字（从0开始递增1，无限个）
         Observable.interval(3, 1, TimeUnit.SECONDS);
+//                  interval = 0
+//                  interval = 1
+//                  interval = 2
+//                  interval = 3
+//                  ...
+
+        //range 指定初始值和数量，连续发送事件
+        Observable.range(1, 4);
+//        range = 1
+//        range = 2
+//        range = 3
+//        range = 4
+
 
         //intervalRange 每隔指定时间 就发送 事件，可指定发送的数据的数量
         //延迟3s后发送事件，每隔1秒产生1个数字（从0到10）
-        Observable.intervalRange(0, 10, 3, 1, TimeUnit.SECONDS);
-
-        //range 指定初始值和数量，连续发送事件
-        Observable.range(1, 10);//发送1-10的事件
-
+        Observable.intervalRange(1, 4, 3, 1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        Log.d(TAG, "intervalRange = " + aLong);
+                    }
+                });
+//        intervalRange = 1
+//        intervalRange = 2
+//        intervalRange = 3
+//        intervalRange = 4
         //rangeLong 类似于range（），区别在于该方法支持数据类型 = Long
     }
 
@@ -335,57 +338,78 @@ public class RxJavaActivity extends AppCompatActivity {
     private void rxJava_5() {
         //组合操作符
         // concat（）：组合多个被观察者（≤4个）(串行)一起发送数据,结果1,2,3,4, 当发送error事件时，后面将停止发送其他事件
-        Observable.concat(Observable.just(1, 2), Observable.just(3, 4));
+        Observable.concat(Observable.timer(1, TimeUnit.SECONDS), Observable.just(3l, 4l));
+        //concat = 0
+//        concat = 3
+//        concat = 4
         // concatArray（）：组合多个被观察者一起发送数据（可＞4个）结果1,2,3,4,5
         Observable.concatArray(Observable.just(1), Observable.just(2), Observable.just(3), Observable.just(4), Observable.just(5));
         //concatDelayError（）如果第一个发送了error事件，并不影响其他的被观察者发送事件
         //firstElement()//从串行队列依次按顺序遍历事件，取出数据，如果取到，则发送事件，停止遍历。使用场景，从内存，缓存，网络中获取数据，取到则停止
 
         //merge 组合多个被观察者（≤4个）按时间并行 发送数据
-        Observable.merge(Observable.intervalRange(0, 10, 1, 1, TimeUnit.SECONDS),
-                Observable.intervalRange(11, 20, 2, 2, TimeUnit.SECONDS));
+        Observable.merge(Observable.intervalRange(0, 4, 1, 1, TimeUnit.SECONDS),
+                Observable.intervalRange(11, 4, 2, 2, TimeUnit.SECONDS));
+        // merge = 0
+//        merge = 1
+//        merge = 11
+//        merge = 2
+//        merge = 3
+//        merge = 12
+//        merge = 13
+//        merge = 14
         // mergeArray（） = 组合4个以上的被观察者一起发送数据
         //mergeDelayError（）与concatDelayError（）同理
 
         //zip将两个事件合并发送
-        Observable.zip(Observable.just(1), Observable.just(2), new BiFunction<Integer, Integer, Integer>() {
+        Observable.zip(Observable.intervalRange(0, 6, 1, 1, TimeUnit.SECONDS),
+                Observable.intervalRange(11, 5, 3, 2, TimeUnit.SECONDS), new BiFunction<Long, Long, Long>() {
             @Override
-            public Integer apply(Integer integer, Integer integer2) throws Exception {
-                return integer + integer2;
-            }
-        }).subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(Integer integer) {
-                JLog.d(TAG, "integer" + integer);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
+            public Long apply(Long long1, Long long2) throws Exception {
+//                Log.d(TAG, "long1 = " +long1 +"   long2 = " + long2);
+                return long1 + long2;
             }
         });
-
+        //时间间隔是2s
+//           long1 = 0   long2 = 11
+//          zip = 11
+//           long1 = 1   long2 = 12
+//          zip = 13
+//           long1 = 2   long2 = 13
+//          zip = 15
+//           long1 = 3   long2 = 14
+//          zip = 17
+//           long1 = 4   long2 = 15
+//          zip = 19
+        
         //combineLatest（）当两个Observables中的任何一个发送了数据后, 将先发送了数据的Observables 的最新（最后）一个数据 与 另外一个Observable发送的每个数据结合
         Observable.combineLatest(
-                Observable.just(1L, 2L, 3L), // 第1个发送数据事件的Observable
-                Observable.intervalRange(0, 3, 1, 1, TimeUnit.SECONDS), // 第2个发送数据事件的Observable：从0开始发送、共发送3个数据、第1次事件延迟发送时间 = 1s、间隔时间 = 1s
+                Observable.intervalRange(10, 4, 2,2,TimeUnit.SECONDS),
+                Observable.intervalRange(0, 4, 1, 1, TimeUnit.SECONDS),
                 new BiFunction<Long, Long, Long>() {
                     @Override
                     public Long apply(Long aLong, Long aLong2) throws Exception {
+//                        Log.d(TAG, "long1 = " +aLong +"   long2 = " + aLong2);
                         return aLong + aLong2;
                     }
-                });//运行结果：3， 4， 5，因为前面那组数据线发送，前面的Observable最后一个数据是3，后面的Observable数据是0,1,2，组合在一起为3,4,5
+                });
         //combineLatestDelayError（）同concatDelayError（）
+//        long1 = 10   long2 = 0
+//        aLong = 10
+//        long1 = 10   long2 = 1
+//        aLong = 11
+//        long1 = 10   long2 = 2
+//        aLong = 12
+//        long1 = 11   long2 = 2
+//        aLong = 13
+//        long1 = 11   long2 = 3
+//        aLong = 14
+//        long1 = 12   long2 = 3
+//        aLong = 15
+//        long1 = 13   long2 = 3
+//        aLong = 16
+
+
 
         //collect 将被观察者Observable发送的数据事件收集到一个数据结构里,结果，将1,2,3,4,5，6组成了list
         Observable.just(1, 2, 3, 4, 5, 6)
@@ -399,22 +423,38 @@ public class RxJavaActivity extends AppCompatActivity {
                     public void accept(ArrayList<Integer> integers, Integer integer) throws Exception {
                         integers.add(integer);
                     }
-                })
-                .subscribe(new Consumer<ArrayList<Integer>>() {
-                    @Override
-                    public void accept(ArrayList<Integer> integers) throws Exception {
-
-                    }
                 });
+        // collect = [1, 2, 3, 4, 5, 6]
 
-        //startWith（） / startWithArray（）发送事件前追加事件,运行结果：1，2,3,0,4,5,6
+
+        //startWith（） / startWithArray（）发送事件前追加事件
         Observable.just(4, 5, 6)
                 .startWith(0)  // 追加单个数据 = startWith()
-                .startWithArray(1, 2, 3); // 追加多个数据 = startWithArray()
+                .startWithArray(1, 2, 3)// 追加多个数据 = startWithArray()
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Log.d(TAG, "startWith/startWithArray = " + integer);
+                    }
+                });
+//        startWith/startWithArray = 1
+//        startWith/startWithArray = 2
+//        startWith/startWithArray = 3
+//        startWith/startWithArray = 0
+//        startWith/startWithArray = 4
+//        startWith/startWithArray = 5
+//        startWith/startWithArray = 6
 
         //count（）统计发送事件的数量,运行结果为4
         Observable.just(1, 2, 3, 4)
-                .count();
+                .count()
+        .subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                Log.d(TAG, "count = " + aLong);
+            }
+        });
+        //count = 4
     }
 
     private void rxJava_6() {
@@ -972,4 +1012,6 @@ public class RxJavaActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 }

@@ -14,6 +14,7 @@ import com.nmssdmf.testmodule.bean.MainBean;
 import com.nmssdmf.testmodule.callback.MainCB;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
 import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
+import com.nmssdmf.testmodule.sort.SortActivity;
 import com.nmssdmf.testmodule.viewmodel.MainVM;
 
 public class TestMainActivity extends BaseTitleActivity implements MainCB{
@@ -70,6 +71,10 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                     }
                     case "rxjava":{
                         c = RxJavaActivity.class;
+                        break;
+                    }
+                    case "sort":{
+                        c = SortActivity.class;
                         break;
                     }
                 }
