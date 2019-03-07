@@ -54,6 +54,5 @@ dependencies {
     //easypermissions
     implementation 'pub.devrel:easypermissions:2.0.1'
 
-    implementation 'com.squareup.okhttp3:okhttp:3.13.1'
-
+//    implementation 'com.squareup.okhttp3:okhttp:3.13.1'
 }

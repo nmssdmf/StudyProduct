@@ -1,5 +1,7 @@
 package com.nmssdmf.testmodule.ThreadPoolExecutor;
 
+import com.nmssdmf.commonlib.util.JLog;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -47,20 +49,20 @@ public class HttpClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                call.cancel();
-//                httpResponseCall.onFailure();
-//                JLog.d(TAG, "onFailure");
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                httpResponseCall.onResponseSuccess(response);
-//                call.cancel();
-//            }
-//        });
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                call.cancel();
+                httpResponseCall.onFailure();
+                JLog.d(TAG, "onFailure");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                httpResponseCall.onResponseSuccess(response);
+                call.cancel();
+            }
+        });
     }
 
     /**

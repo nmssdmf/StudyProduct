@@ -30,6 +30,7 @@ public class MainVM extends BaseVM {
         list.add(new MainBean("多线程文件下载"));
         list.add(new MainBean("rxjava"));
         list.add(new MainBean("sort"));
+        list.add(new MainBean("线程打印"));
     }
 
     public List<MainBean> getList() {

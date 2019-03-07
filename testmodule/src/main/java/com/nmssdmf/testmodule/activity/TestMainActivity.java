@@ -2,9 +2,11 @@ package com.nmssdmf.testmodule.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.nmssdmf.commonlib.activity.BaseTitleActivity;
+import com.nmssdmf.commonlib.util.JLog;
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
 import com.nmssdmf.customerviewlib.BaseQuickAdapter;
 import com.nmssdmf.testmodule.R;
@@ -77,11 +79,73 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                         c = SortActivity.class;
                         break;
                     }
+                    case "线程打印":{
+                        threadLog();
+                        break;
+                    }
                 }
-                Intent intent = new Intent(TestMainActivity.this, c);
-                startActivity(intent);
+                if (c != null) {
+                    Intent intent = new Intent(TestMainActivity.this, c);
+                    startActivity(intent);
+                }
             }
         });
+    }
+
+    private String string = "";
+    private boolean lock = false;
+    public void threadLog(){
+        final String[] log1 = {"1","2", "3", "4", "5", "6","7", "8", "9"};
+        final String[] log2 = {"A","B", "C", "D", "E", "F","G", "H", "I"};
+
+        final Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+               for (int i = 0; i< log1.length;) {
+                    synchronized (string) {
+                        if (lock) {
+                            try {
+                                JLog.d(TAG, "thread1 lock");
+                                string.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.d(TAG, "log = " + log1[i]);
+                            i+=1;
+                            lock = true;
+                            string.notifyAll();
+                        }
+                    }
+               }
+            }
+        });
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i< log2.length;) {
+                    synchronized (string) {
+                        if (!lock) {
+                            try {
+                                JLog.d(TAG, "thread2 lock");
+                                string.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.d(TAG, "log = " + log2[i]);
+                            i+=1;
+                            lock = false;
+                            string.notifyAll();
+                        }
+                    }
+                }
+            }
+        });
+
+        thread1.start();
+        thread2.start();
     }
 
 }
