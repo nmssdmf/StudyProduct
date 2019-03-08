@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.nmssdmf.testmodule">
+    package="com.nmssdmf.testmodule">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.robert.permission.READ_CONTENTPROVIDER"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.robert.permission.READ_CONTENTPROVIDER" />
     <!-- 文件读写 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- socket 通信 -->
     <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <permission
         android:name="com.nmssdmf.permission.READ_CONTENTPROVIDER"
         android:label="Allow read content provider"
-        android:protectionLevel="normal"/>
+        android:protectionLevel="normal" />
 
     <application
         android:name=".application.App"
@@ -25,62 +25,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <service android:name=".service.TestService"/>
+        <service android:name=".service.TestService" />
         <service
             android:name=".aidl.AIDLService"
-            android:process=":remote4"/>
+            android:process=":remote4" />
         <service
             android:name=".aidl.MessengerService"
-            android:process=":remote5"/>
+            android:process=":remote5" />
         <service
             android:name=".ipc.socket.SocketSerivce"
-            android:process=":scoket"/>
+            android:process=":scoket" />
 
         <provider
             android:name=".ipc.contentprovider.BookProvider"
             android:authorities="com.nmssdmf.testmodule.ipc.contentprovider.bookprovider"
             android:permission="com.nmssdmf.permission.READ_CONTENTPROVIDER"
-            android:process=":provider"/>
+            android:process=":provider" />
 
         <activity android:name=".activity.TestMainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".touchevent.TouchActivity"/>
+        <activity android:name=".touchevent.TouchActivity" />
         <activity
             android:name=".falling.FallingActivity"
             android:label="@string/title_activity_falling"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".bookpage.BookPageActivity"/>
-        <activity android:name=".service.TestServiceActivity">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".bookpage.BookPageActivity" />
+        <activity android:name=".service.TestServiceActivity" />
         <activity
             android:name=".ipc.RemoteOneActivity"
-            android:process=":remote2">
-        </activity>
+            android:process=":remote2" />
         <activity
             android:name=".ipc.RemoteTwoActivity"
-            android:process=":remote3">
-        </activity>
-        <activity android:name=".ipc.contentprovider.ProviderActivity">
-        </activity>
-        <activity android:name=".ipc.socket.SocketActivity">
-        </activity>
-        <activity android:name=".touchevent.touchsolve.TouchSolveActivity">
-        </activity>
-        <activity android:name=".rtsp.RtspActivity">
-        </activity>
-        <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity">
-        </activity>
-        <activity android:name=".rxjava.RxJavaActivity">
-        </activity>
-        <activity android:name=".sort.SortActivity">
-        </activity>
-        <activity android:name=".annotation.MainActivity">
-        </activity>
+            android:process=":remote3" />
+        <activity android:name=".ipc.contentprovider.ProviderActivity" />
+        <activity android:name=".ipc.socket.SocketActivity" />
+        <activity android:name=".touchevent.touchsolve.TouchSolveActivity" />
+        <activity android:name=".rtsp.RtspActivity" />
+        <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity" />
+        <activity android:name=".rxjava.RxJavaActivity" />
+        <activity android:name=".sort.SortActivity" />
+        <activity android:name=".db.DbActivity"></activity>
     </application>
 
 </manifest>

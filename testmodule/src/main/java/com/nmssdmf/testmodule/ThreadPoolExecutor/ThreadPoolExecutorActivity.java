@@ -47,9 +47,9 @@ public class ThreadPoolExecutorActivity extends AppCompatActivity implements Eas
 
         //可重用固定线程,只有核心线程
         executorService = Executors.newFixedThreadPool(5);//固定核心线程和最大线程数，并且不会被回收,适合量少，需要响应快的
-        executorService = Executors.newSingleThreadExecutor();//只有一个核心线程，并且不会被回收,只有单个任务排队的
-        executorService = Executors.newCachedThreadPool();//只有非核心线程，并且数量为最大值，有新任务就新建线程，线程空闲60s就回收,适合量大，耗时少的
-        executorService = Executors.newScheduledThreadPool(5);//指定核心线程数，非核心线程数为最大值，非核心线程闲置会被回收,一般执行定时任务和重复性任务
+//        executorService = Executors.newSingleThreadExecutor();//只有一个核心线程，并且不会被回收,只有单个任务排队的
+//        executorService = Executors.newCachedThreadPool();//只有非核心线程，并且数量为最大值，有新任务就新建线程，线程空闲60s就回收,适合量大，耗时少的
+//        executorService = Executors.newScheduledThreadPool(5);//指定核心线程数，非核心线程数为最大值，非核心线程闲置会被回收,一般执行定时任务和重复性任务
 
 
         button.setOnClickListener(new View.OnClickListener() {
