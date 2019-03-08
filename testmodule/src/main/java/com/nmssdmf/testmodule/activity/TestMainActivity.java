@@ -10,6 +10,7 @@ import com.nmssdmf.customerviewlib.BaseQuickAdapter;
 import com.nmssdmf.testmodule.R;
 import com.nmssdmf.testmodule.ThreadPoolExecutor.ThreadPoolExecutorActivity;
 import com.nmssdmf.testmodule.adapter.MainAdapter;
+import com.nmssdmf.testmodule.annotation.MainActivity;
 import com.nmssdmf.testmodule.bean.MainBean;
 import com.nmssdmf.testmodule.callback.MainCB;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
@@ -75,6 +76,10 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                     }
                     case "sort":{
                         c = SortActivity.class;
+                        break;
+                    }
+                    case "注解":{
+                        c = MainActivity.class;
                         break;
                     }
                 }

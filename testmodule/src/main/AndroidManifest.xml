@@ -79,6 +79,8 @@
         </activity>
         <activity android:name=".sort.SortActivity">
         </activity>
+        <activity android:name=".annotation.MainActivity">
+        </activity>
     </application>
 
 </manifest>
