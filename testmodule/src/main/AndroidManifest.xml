@@ -70,6 +70,7 @@
         <activity android:name=".rxjava.RxJavaActivity" />
         <activity android:name=".sort.SortActivity" />
         <activity android:name=".db.DbActivity"></activity>
+        <activity android:name=".annotation.MainActivity"/>
     </application>
 
 </manifest>
