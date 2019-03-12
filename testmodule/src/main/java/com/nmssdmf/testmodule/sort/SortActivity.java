@@ -3,8 +3,6 @@ package com.nmssdmf.testmodule.sort;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.nmssdmf.commonlib.util.JLog;
 import com.nmssdmf.testmodule.R;
 
 public class SortActivity extends AppCompatActivity {
@@ -22,8 +20,9 @@ public class SortActivity extends AppCompatActivity {
 
 //        bubblingSort(arr);
 //        insertSort(arr);
-        selectSort(arr);
-        JLog.d(TAG, "arr = " + new Gson().toJson(arr));
+//        selectSort(arr);
+        tree();
+//        JLog.d(TAG, "arr = " + new Gson().toJson(arr));
     }
 
     /**
@@ -123,4 +122,19 @@ public class SortActivity extends AppCompatActivity {
         quickSort(arr, low, j - 1);
         quickSort(arr, j + 1, hign);
     }
+
+    public void tree(){
+        TreeImpl tree = new TreeImpl(6);
+        tree.insert(3);
+        tree.insert(7);
+        tree.insert(8);
+        tree.insert(2);
+        tree.insert(9);
+        tree.insert(1);
+        tree.insert(4);
+        tree.insert(5);
+        tree.insert(10);
+        tree.traverse(tree.getRoot());
+    }
+
 }
