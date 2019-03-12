@@ -51,6 +51,9 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
         binding.crv.setAdapter(adapter);
 
         onListener();
+
+
+
     }
 
     @Override
