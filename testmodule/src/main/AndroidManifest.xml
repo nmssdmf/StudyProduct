@@ -18,30 +18,13 @@
         android:protectionLevel="normal" />
 
     <application
-        android:name=".application.App"
+        android:name=".activity.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <service android:name=".service.TestService" />
-        <service
-            android:name=".aidl.AIDLService"
-            android:process=":remote4" />
-        <service
-            android:name=".aidl.MessengerService"
-            android:process=":remote5" />
-        <service
-            android:name=".ipc.socket.SocketSerivce"
-            android:process=":scoket" />
-
-        <provider
-            android:name=".ipc.contentprovider.BookProvider"
-            android:authorities="com.nmssdmf.testmodule.ipc.contentprovider.bookprovider"
-            android:permission="com.nmssdmf.permission.READ_CONTENTPROVIDER"
-            android:process=":provider" />
-
         <activity android:name=".activity.TestMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,28 +32,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".touchevent.TouchActivity" />
-        <activity
-            android:name=".falling.FallingActivity"
-            android:label="@string/title_activity_falling"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".bookpage.BookPageActivity" />
-        <activity android:name=".service.TestServiceActivity" />
-        <activity
-            android:name=".ipc.RemoteOneActivity"
-            android:process=":remote2" />
-        <activity
-            android:name=".ipc.RemoteTwoActivity"
-            android:process=":remote3" />
-        <activity android:name=".ipc.contentprovider.ProviderActivity" />
-        <activity android:name=".ipc.socket.SocketActivity" />
-        <activity android:name=".touchevent.touchsolve.TouchSolveActivity" />
-        <activity android:name=".rtsp.RtspActivity" />
         <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity" />
         <activity android:name=".rxjava.RxJavaActivity" />
-        <activity android:name=".sort.SortActivity" />
-        <activity android:name=".db.DbActivity"></activity>
-        <activity android:name=".annotation.MainActivity"/>
+        <activity android:name=".annotation.MainActivity" />
+        <activity android:name=".service.ServiceActivity"></activity>
+        <service android:name=".service.TestBindService"/>
+        <service android:name=".service.TestStartService"/>
+        <service android:name=".service.TestIntentService"/>
+
     </application>
 
 </manifest>

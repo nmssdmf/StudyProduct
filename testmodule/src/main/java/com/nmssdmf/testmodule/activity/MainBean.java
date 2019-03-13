@@ -1,4 +1,4 @@
-package com.nmssdmf.testmodule.bean;
+package com.nmssdmf.testmodule.activity;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

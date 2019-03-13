@@ -1,8 +1,6 @@
-package com.nmssdmf.testmodule.viewmodel;
+package com.nmssdmf.testmodule.activity;
 
 import com.nmssdmf.commonlib.viewmodel.BaseVM;
-import com.nmssdmf.testmodule.bean.MainBean;
-import com.nmssdmf.testmodule.callback.MainCB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +27,8 @@ public class MainVM extends BaseVM {
     public void initList() {
         list.add(new MainBean("多线程文件下载"));
         list.add(new MainBean("rxjava"));
-        list.add(new MainBean("sort"));
         list.add(new MainBean("注解"));
+        list.add(new MainBean("Service"));
     }
 
     public List<MainBean> getList() {

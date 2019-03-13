@@ -9,14 +9,10 @@ import com.nmssdmf.commonlib.viewmodel.BaseVM;
 import com.nmssdmf.customerviewlib.BaseQuickAdapter;
 import com.nmssdmf.testmodule.R;
 import com.nmssdmf.testmodule.ThreadPoolExecutor.ThreadPoolExecutorActivity;
-import com.nmssdmf.testmodule.adapter.MainAdapter;
 import com.nmssdmf.testmodule.annotation.MainActivity;
-import com.nmssdmf.testmodule.bean.MainBean;
-import com.nmssdmf.testmodule.callback.MainCB;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
 import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
-import com.nmssdmf.testmodule.sort.SortActivity;
-import com.nmssdmf.testmodule.viewmodel.MainVM;
+import com.nmssdmf.testmodule.service.ServiceActivity;
 
 public class TestMainActivity extends BaseTitleActivity implements MainCB{
 
@@ -77,12 +73,12 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                         c = RxJavaActivity.class;
                         break;
                     }
-                    case "sort":{
-                        c = SortActivity.class;
-                        break;
-                    }
                     case "注解":{
                         c = MainActivity.class;
+                        break;
+                    }
+                    case "Service" :{
+                        c = ServiceActivity.class;
                         break;
                     }
                 }

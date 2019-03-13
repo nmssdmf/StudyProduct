@@ -1,11 +1,11 @@
-package com.nmssdmf.testmodule.adapter;
+package com.nmssdmf.testmodule.activity;
 
 import android.support.annotation.Nullable;
 
 import com.nmssdmf.customerviewlib.databindingbase.BaseBindingViewHolder;
 import com.nmssdmf.customerviewlib.databindingbase.BaseDataBindingAdapter;
 import com.nmssdmf.testmodule.R;
-import com.nmssdmf.testmodule.bean.MainBean;
+import com.nmssdmf.testmodule.activity.MainBean;
 import com.nmssdmf.testmodule.databinding.ItemMainBinding;
 
 import java.util.List;
