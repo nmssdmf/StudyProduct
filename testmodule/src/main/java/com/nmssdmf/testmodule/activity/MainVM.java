@@ -31,6 +31,8 @@ public class MainVM extends BaseVM {
         list.add(new MainBean("四大组件之Service"));
         list.add(new MainBean("四大组件之BroadCastReceiver"));
         list.add(new MainBean("AsyncTask"));
+        list.add(new MainBean("四大组件之ContentProvider"));
+        list.add(new MainBean("四大组件之ContentProvider进程"));
     }
 
     public List<MainBean> getList() {

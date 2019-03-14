@@ -3,7 +3,6 @@
           package="com.nmssdmf.testmodule">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.robert.permission.READ_CONTENTPROVIDER"/>
     <!-- 文件读写 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -12,10 +11,13 @@
     <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <permission
-        android:name="com.nmssdmf.permission.READ_CONTENTPROVIDER"
-        android:label="Allow read content provider"
-        android:protectionLevel="normal"/>
+    <!--contentRelover访问的权限-->
+    <uses-permission android:name="com.nmssdmf.permission.PROVIDER"/>
+
+    <!--contentProvider提供的进程的权限-->
+    <permission android:name="com.nmssdmf.permission.Read" android:protectionLevel="normal"/>
+    <permission android:name="com.nmssdmf.permission.Write" android:protectionLevel="normal"/>
+    <permission android:name="com.nmssdmf.permission.PROVIDER" android:protectionLevel="normal"/>
 
     <application
         android:name=".activity.App"
@@ -52,6 +54,19 @@
         </receiver>
 
         <activity android:name=".asynctask.AsyncTaskActivity">
+        </activity>
+
+        <provider
+            android:name=".contentprovider.MyProvider"
+            android:authorities="com.nmssdmf.testmodule.contentprovider.MyProvider"
+            android:exported="true"
+            android:permission="com.nmssdmf.testmodule.contentprovider.MyProvider"
+            />
+
+        <activity android:name=".contentprovider.ContentProviderActivity">
+        </activity>
+        <activity android:name=".contentprovider.ContentproviderProcessActivity"
+            android:process=":contentProvider">
         </activity>
     </application>
 
