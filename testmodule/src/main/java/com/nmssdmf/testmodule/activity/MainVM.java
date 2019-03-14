@@ -28,7 +28,9 @@ public class MainVM extends BaseVM {
         list.add(new MainBean("多线程文件下载"));
         list.add(new MainBean("rxjava"));
         list.add(new MainBean("注解"));
-        list.add(new MainBean("Service"));
+        list.add(new MainBean("四大组件之Service"));
+        list.add(new MainBean("四大组件之BroadCastReceiver"));
+        list.add(new MainBean("AsyncTask"));
     }
 
     public List<MainBean> getList() {

@@ -21,6 +21,10 @@ import com.nmssdmf.testmodule.R;
  * IntentService:只有startService这一种启动方式
  *      1.在调用startService的时候，回调生命周期，onCreate->onStartCommand->onHandleIntent->onDestroy，并且，onHandleIntent在异步线程中进行，
  *          其余生命周期在主线程中进行，不需要单独调用stopService，线程运行结束，自动回调onDestroy
+ *      2.原理：IntentService继承Service，在Service的onCreate方法中，生成一个HandlerThread和ServiceHandler，HandlerThread提供异步操作，
+ *          在onStart的时候，ServiceHandler发送消息，在ServiceHandler中处理，回调onHandleIntent方法，然后stopService。
+ * 设置Service的优先级:
+ *      1.在onStartCommand中调用startForeground方法，将service提升为前台进程级别，然后再onDestory里面调用stopForeground方法
  */
 public class ServiceActivity extends AppCompatActivity {
     private final String TAG = ServiceActivity.class.getSimpleName();
@@ -31,6 +35,7 @@ public class ServiceActivity extends AppCompatActivity {
 
         Log.d(TAG, "Thread id = " + Thread.currentThread().getId());
 
+        //startService
         final Intent intent = new Intent();
         intent.setClass(ServiceActivity.this, TestStartService.class);
 
@@ -48,6 +53,7 @@ public class ServiceActivity extends AppCompatActivity {
             }
         });
 
+        //bindingService
         final ServiceConnection connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
@@ -77,6 +83,7 @@ public class ServiceActivity extends AppCompatActivity {
             }
         });
 
+        //intentService
         final Intent intent2 = new Intent();
         intent2.setClass(this, TestIntentService.class);
 
