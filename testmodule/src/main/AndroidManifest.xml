@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.nmssdmf.testmodule">
+    package="com.nmssdmf.testmodule">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 文件读写 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- socket 通信 -->
     <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--contentRelover访问的权限-->
-    <uses-permission android:name="com.nmssdmf.permission.PROVIDER"/>
+    <!-- contentRelover访问的权限 -->
+    <uses-permission android:name="com.nmssdmf.permission.PROVIDER" />
 
-    <!--contentProvider提供的进程的权限-->
-    <permission android:name="com.nmssdmf.permission.Read" android:protectionLevel="normal"/>
-    <permission android:name="com.nmssdmf.permission.Write" android:protectionLevel="normal"/>
-    <permission android:name="com.nmssdmf.permission.PROVIDER" android:protectionLevel="normal"/>
+    <!-- contentProvider提供的进程的权限 -->
+    <permission
+        android:name="com.nmssdmf.permission.Read"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.nmssdmf.permission.Write"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.nmssdmf.permission.PROVIDER"
+        android:protectionLevel="normal" />
 
     <application
         android:name=".activity.App"
@@ -29,45 +35,41 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".activity.TestMainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity"/>
-        <activity android:name=".rxjava.RxJavaActivity"/>
-        <activity android:name=".annotation.MainActivity"/>
-        <activity android:name=".service.ServiceActivity"/>
+        <activity android:name=".ThreadPoolExecutor.ThreadPoolExecutorActivity" />
+        <activity android:name=".rxjava.RxJavaActivity" />
+        <activity android:name=".annotation.MainActivity" />
+        <activity android:name=".service.ServiceActivity" />
 
-        <service android:name=".service.TestBindService"/>
-        <service android:name=".service.TestStartService">
-        </service>
-        <service android:name=".service.TestIntentService"/>
+        <service android:name=".service.TestBindService" />
+        <service android:name=".service.TestStartService"></service>
+        <service android:name=".service.TestIntentService" />
 
-        <activity android:name=".receiver.BroadCastReceiverActivity">
-        </activity>
+        <activity android:name=".receiver.BroadCastReceiverActivity"></activity>
 
         <receiver android:name=".receiver.TestReceiver1">
             <intent-filter>
-                <action android:name="com.nmssdmf.testmodule.receiver.TestReceiver1"/>
+                <action android:name="com.nmssdmf.testmodule.receiver.TestReceiver1" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".asynctask.AsyncTaskActivity">
-        </activity>
+        <activity android:name=".asynctask.AsyncTaskActivity"></activity>
 
         <provider
             android:name=".contentprovider.MyProvider"
             android:authorities="com.nmssdmf.testmodule.contentprovider.MyProvider"
             android:exported="true"
-            android:permission="com.nmssdmf.testmodule.contentprovider.MyProvider"
-            />
+            android:permission="com.nmssdmf.testmodule.contentprovider.MyProvider" />
 
-        <activity android:name=".contentprovider.ContentProviderActivity">
-        </activity>
-        <activity android:name=".contentprovider.ContentproviderProcessActivity"
-            android:process=":contentProvider">
-        </activity>
+        <activity android:name=".contentprovider.ContentProviderActivity"></activity>
+        <activity
+            android:name=".contentprovider.ContentproviderProcessActivity"
+            android:process=":contentProvider"></activity>
+        <activity android:name=".customerview.CustomerViewActivity"></activity>
     </application>
 
 </manifest>

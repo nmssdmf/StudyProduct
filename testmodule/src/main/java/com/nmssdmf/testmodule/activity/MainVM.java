@@ -33,6 +33,7 @@ public class MainVM extends BaseVM {
         list.add(new MainBean("AsyncTask"));
         list.add(new MainBean("四大组件之ContentProvider"));
         list.add(new MainBean("四大组件之ContentProvider进程"));
+        list.add(new MainBean("自定义view"));
     }
 
     public List<MainBean> getList() {

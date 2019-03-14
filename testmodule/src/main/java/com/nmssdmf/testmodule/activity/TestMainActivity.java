@@ -13,6 +13,7 @@ import com.nmssdmf.testmodule.annotation.MainActivity;
 import com.nmssdmf.testmodule.asynctask.AsyncTaskActivity;
 import com.nmssdmf.testmodule.contentprovider.ContentProviderActivity;
 import com.nmssdmf.testmodule.contentprovider.ContentproviderProcessActivity;
+import com.nmssdmf.testmodule.customerview.CustomerViewActivity;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
 import com.nmssdmf.testmodule.receiver.BroadCastReceiverActivity;
 import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
@@ -99,6 +100,10 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                     }
                     case "四大组件之ContentProvider进程" :{
                         c = ContentproviderProcessActivity.class;
+                        break;
+                    }
+                    case "自定义view":{
+                        c = CustomerViewActivity.class;
                         break;
                     }
                 }
