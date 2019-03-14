@@ -11,6 +11,9 @@ import android.view.View;
 
 import com.nmssdmf.testmodule.R;
 
+/**
+ * contentProvider进程间通信
+ */
 public class ContentproviderProcessActivity extends AppCompatActivity {
     private final String TAG = ContentproviderProcessActivity.class.getSimpleName();
     @Override
