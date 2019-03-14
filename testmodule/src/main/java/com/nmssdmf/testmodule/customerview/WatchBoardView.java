@@ -24,6 +24,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
+/**
+ * 一个时钟的自定义view
+ */
 public class WatchBoardView extends View {
     private final String TAG = WatchBoardView.class.getSimpleName();
     private float radius;//圆形半径
