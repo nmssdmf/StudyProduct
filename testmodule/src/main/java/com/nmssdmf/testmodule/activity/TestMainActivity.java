@@ -18,6 +18,7 @@ import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
 import com.nmssdmf.testmodule.receiver.BroadCastReceiverActivity;
 import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
 import com.nmssdmf.testmodule.service.ServiceActivity;
+import com.nmssdmf.testmodule.sort.SortActivity;
 
 public class TestMainActivity extends BaseTitleActivity implements MainCB{
 
@@ -104,6 +105,10 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                     }
                     case "自定义view":{
                         c = CustomerViewActivity.class;
+                        break;
+                    }
+                    case "排序算法":{
+                        c = SortActivity.class;
                         break;
                     }
                 }

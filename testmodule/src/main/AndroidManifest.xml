@@ -46,10 +46,10 @@
         <activity android:name=".service.ServiceActivity" />
 
         <service android:name=".service.TestBindService" />
-        <service android:name=".service.TestStartService"></service>
+        <service android:name=".service.TestStartService" />
         <service android:name=".service.TestIntentService" />
 
-        <activity android:name=".receiver.BroadCastReceiverActivity"></activity>
+        <activity android:name=".receiver.BroadCastReceiverActivity" />
 
         <receiver android:name=".receiver.TestReceiver1">
             <intent-filter>
@@ -57,7 +57,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".asynctask.AsyncTaskActivity"></activity>
+        <activity android:name=".asynctask.AsyncTaskActivity" />
 
         <provider
             android:name=".contentprovider.MyProvider"
@@ -65,11 +65,12 @@
             android:exported="true"
             android:permission="com.nmssdmf.testmodule.contentprovider.MyProvider" />
 
-        <activity android:name=".contentprovider.ContentProviderActivity"></activity>
+        <activity android:name=".contentprovider.ContentProviderActivity" />
         <activity
             android:name=".contentprovider.ContentproviderProcessActivity"
-            android:process=":contentProvider"></activity>
-        <activity android:name=".customerview.CustomerViewActivity"></activity>
+            android:process=":contentProvider" />
+        <activity android:name=".customerview.CustomerViewActivity" />
+        <activity android:name=".sort.SortActivity"></activity>
     </application>
 
 </manifest>

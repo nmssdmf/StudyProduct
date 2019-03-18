@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sort.SortActivity">
+
+    <TextView
+        android:id="@+id/tvNum"
+        android:layout_width="347dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="7,3,8,1,4,5,9,6,2"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnBubbling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="冒泡排序"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/btnQuick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="快速排序"
+        app:layout_constraintStart_toStartOf="@+id/btnBubbling"
+        app:layout_constraintTop_toBottomOf="@+id/btnBubbling" />
+
+    <Button
+        android:id="@+id/btnInsertion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="插入排序"
+        app:layout_constraintStart_toStartOf="@+id/btnQuick"
+        app:layout_constraintTop_toBottomOf="@+id/btnQuick" />
+
+    <Button
+        android:id="@+id/btnSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="选择排序"
+        app:layout_constraintStart_toStartOf="@+id/btnInsertion"
+        app:layout_constraintTop_toBottomOf="@+id/btnInsertion" />
+</android.support.constraint.ConstraintLayout>
