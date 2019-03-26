@@ -9,6 +9,10 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,6 +52,10 @@ public class WatchBoardView extends View {
     private PaintFlagsDrawFilter drawFilter;//为画布设置抗锯齿
 
     private int width;
+
+    private HandlerThread handlerThread;
+    private Handler delayHandler;
+    private Handler mainHandler;
 
     public WatchBoardView(Context context) {
         this(context, null);
@@ -111,7 +119,8 @@ public class WatchBoardView extends View {
         long time = System.currentTimeMillis() - startTime;
         Log.d(TAG, "time = " + time);
         // 每一秒刷新一次
-        postInvalidateDelayed(1000);
+//        postInvalidateDelayed(1000);
+            onStart();
     }
 
     private void drawPointer(Canvas canvas) {
@@ -224,6 +233,52 @@ public class WatchBoardView extends View {
 
     private int dpToPx(float dp) {
         return DensityUtil.dpToPx(getContext(), dp);
+    }
+
+    /**
+     * 时钟开始走时
+     */
+    public void onStart(){
+        if (handlerThread == null) {
+            handlerThread = new HandlerThread("refresh");
+            handlerThread.start();
+            delayHandler = new Handler(handlerThread.getLooper()){
+                @Override
+                public void handleMessage(Message msg) {
+                    try {
+                        Thread.sleep(1000);
+                        mainHandler.sendEmptyMessage(0);
+                        delayHandler.sendEmptyMessage(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            mainHandler = new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    invalidate();
+                    return true;
+                }
+            });
+            delayHandler.sendEmptyMessage(0);
+        }
+    }
+
+    /**
+     * 在ui结束时必须调用，否则造成内存泄漏
+     * 时钟停止走时
+     */
+    public void onStop(){
+        if (handlerThread != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                handlerThread.quitSafely();
+            } else {
+                handlerThread.quit();
+            }
+            delayHandler.removeMessages(0);
+            mainHandler.removeMessages(0);
+        }
     }
 
 }
