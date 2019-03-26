@@ -30,6 +30,7 @@ import io.reactivex.functions.Consumer;
 
 /**
  * 一个时钟的自定义view
+ * 通过HandlerThread来进行延迟重绘
  */
 public class WatchBoardView extends View {
     private final String TAG = WatchBoardView.class.getSimpleName();
