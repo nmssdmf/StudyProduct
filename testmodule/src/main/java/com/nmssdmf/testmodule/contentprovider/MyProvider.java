@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
 /**
  * Created by ${nmssdmf} on 2019/3/14 0014.
+ * ContentProvider可以进行多线程操作，所以需要进行多线程同步操作
  */
 
 public class MyProvider extends ContentProvider {
@@ -35,7 +36,7 @@ public class MyProvider extends ContentProvider {
         // 若URI资源路径 = content://cn.scu.myprovider/user ，则返回注册码User_Code
         // 若URI资源路径 = content://cn.scu.myprovider/job ，则返回注册码Job_Code
         matcher.addURI(AUTOHORITY, DBHelper.USER_TABLE_NAME, USER_CODE);
-        matcher.addURI(AUTOHORITY, DBHelper.USER_TABLE_NAME, USER_CODE);
+        matcher.addURI(AUTOHORITY, DBHelper.JOB_TABLE_NAME, JOB_CODE);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class MyProvider extends ContentProvider {
         //添加数据
         database.insert(table, null, values);
         //当该Uri的contentProvider数据发生改变时，通知外界（即访问该ContentProvider数据的访问者）
-        context.getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);//会触发ContentResolver注册的两个onChange方法
         //通过ContentUris类从URL中获取ID
 //        long id = ContentUris.parseId(uri);
 //        Log.d(TAG, "id = " + id);

@@ -15,6 +15,7 @@ import com.nmssdmf.testmodule.contentprovider.ContentProviderActivity;
 import com.nmssdmf.testmodule.contentprovider.ContentproviderProcessActivity;
 import com.nmssdmf.testmodule.customerview.CustomerViewActivity;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
+import com.nmssdmf.testmodule.ipc.IPCActivity;
 import com.nmssdmf.testmodule.receiver.BroadCastReceiverActivity;
 import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
 import com.nmssdmf.testmodule.service.ServiceActivity;
@@ -53,9 +54,6 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
         binding.crv.setAdapter(adapter);
 
         onListener();
-
-
-
     }
 
     @Override
@@ -109,6 +107,10 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                     }
                     case "排序算法":{
                         c = SortActivity.class;
+                        break;
+                    }
+                    case "IPC":{
+                        c = IPCActivity.class;
                         break;
                     }
                 }
