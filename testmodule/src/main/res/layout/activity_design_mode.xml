@@ -182,12 +182,14 @@
 
                 <Button
                     android:id="@+id/btnProxy"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="代理模式" />
 
                 <Button
                     android:id="@+id/btnCombined"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="组合模式" />
@@ -207,12 +209,14 @@
 
                 <Button
                     android:id="@+id/btnDecorative"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="装饰模式" />
 
                 <Button
                     android:id="@+id/btnFlyweight"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="享元模式" />
