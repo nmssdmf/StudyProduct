@@ -10,12 +10,12 @@
     <!-- socket 通信 -->
     <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.nmssdmf.testmodule.AIDL" />
 
-    <uses-permission android:name="com.nmssdmf.testmodule.AIDL"/>
-
-    <!--自定义权限 当需要aidl的操作时，需要添加权限-->
-    <permission android:name="com.nmssdmf.testmodule.AIDL"
-        android:protectionLevel="normal"/>
+    <!-- 自定义权限 当需要aidl的操作时，需要添加权限 -->
+    <permission
+        android:name="com.nmssdmf.testmodule.AIDL"
+        android:protectionLevel="normal" />
 
     <application
         android:name=".activity.App"
@@ -73,9 +73,10 @@
 
         <service
             android:name=".ipc.aidl.AidlService"
-            android:process=":aidl"></service>
+            android:process=":aidl" />
 
-        <activity android:name=".ipc.aidl.AidlActivity"></activity>
+        <activity android:name=".ipc.aidl.AidlActivity" />
+        <activity android:name=".designmode.DesignModeActivity"></activity>
     </application>
 
 </manifest>

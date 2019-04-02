@@ -15,6 +15,7 @@ import com.nmssdmf.testmodule.contentprovider.ContentProviderActivity;
 import com.nmssdmf.testmodule.contentprovider.ContentproviderProcessActivity;
 import com.nmssdmf.testmodule.customerview.CustomerViewActivity;
 import com.nmssdmf.testmodule.databinding.ActivityTestMainBinding;
+import com.nmssdmf.testmodule.designmode.DesignModeActivity;
 import com.nmssdmf.testmodule.ipc.IPCActivity;
 import com.nmssdmf.testmodule.receiver.BroadCastReceiverActivity;
 import com.nmssdmf.testmodule.rxjava.RxJavaActivity;
@@ -111,6 +112,10 @@ public class TestMainActivity extends BaseTitleActivity implements MainCB{
                     }
                     case "IPC":{
                         c = IPCActivity.class;
+                        break;
+                    }
+                    case "设计模式":{
+                        c = DesignModeActivity.class;
                         break;
                     }
                 }

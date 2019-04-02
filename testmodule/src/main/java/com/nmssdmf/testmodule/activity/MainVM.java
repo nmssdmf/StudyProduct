@@ -36,6 +36,7 @@ public class MainVM extends BaseVM {
         list.add(new MainBean("自定义view"));
         list.add(new MainBean("排序算法"));
         list.add(new MainBean("IPC"));
+        list.add(new MainBean("设计模式"));
     }
 
     public List<MainBean> getList() {

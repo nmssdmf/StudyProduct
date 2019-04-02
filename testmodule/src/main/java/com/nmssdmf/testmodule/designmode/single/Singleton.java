@@ -1,4 +1,4 @@
-package com.nmssdmf.testmodule.designmode;
+package com.nmssdmf.testmodule.designmode.single;
 
 /**
  * 单例模式：单例模式有以下几种实现方式
