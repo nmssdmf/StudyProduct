@@ -36,7 +36,7 @@
                     android:text="单例模式" />
 
                 <Button
-                    android:id="@+id/button5"
+                    android:id="@+id/btnBuilder"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -44,7 +44,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat" />
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/btnPrototype"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -59,21 +59,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
                 <Button
-                    android:id="@+id/button7"
+                    android:id="@+id/btnFactory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="工厂模式" />
 
                 <Button
-                    android:id="@+id/button8"
+                    android:id="@+id/btnAbstractFactory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="抽象工厂模式" />
 
                 <Button
-                    android:id="@+id/button9"
+                    android:id="@+id/btnStrategy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -90,21 +90,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <Button
-                    android:id="@+id/button12"
+                    android:id="@+id/btnState"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="状态模式" />
 
                 <Button
-                    android:id="@+id/button13"
+                    android:id="@+id/btnChain"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="责任链模式" />
 
                 <Button
-                    android:id="@+id/button14"
+                    android:id="@+id/btnInterpreter"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -120,21 +120,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                 <Button
-                    android:id="@+id/button15"
+                    android:id="@+id/btnCommand"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="命令模式" />
 
                 <Button
-                    android:id="@+id/button16"
+                    android:id="@+id/btnObserver"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="观察者模式" />
 
                 <Button
-                    android:id="@+id/button17"
+                    android:id="@+id/btnMemo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -147,21 +147,21 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button18"
+                    android:id="@+id/btnIterator"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="迭代器模式" />
 
                 <Button
-                    android:id="@+id/button19"
+                    android:id="@+id/btnTemplateMethod"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="模板方法模式" />
 
                 <Button
-                    android:id="@+id/button20"
+                    android:id="@+id/btnVisitor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -174,20 +174,20 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button21"
+                    android:id="@+id/btnMediator"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="中介模式" />
 
                 <Button
-                    android:id="@+id/button22"
+                    android:id="@+id/btnProxy"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="代理模式" />
 
                 <Button
-                    android:id="@+id/button23"
+                    android:id="@+id/btnCombined"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="组合模式" />
@@ -199,20 +199,20 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button24"
+                    android:id="@+id/btnAdaptation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="适配器模式" />
 
                 <Button
-                    android:id="@+id/button25"
+                    android:id="@+id/btnDecorative"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="装饰模式" />
 
                 <Button
-                    android:id="@+id/button26"
+                    android:id="@+id/btnFlyweight"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="享元模式" />
@@ -224,14 +224,14 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button27"
+                    android:id="@+id/btnFacade"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="外观模式" />
 
                 <Button
-                    android:id="@+id/button28"
+                    android:id="@+id/btnBridge"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
