@@ -2,12 +2,18 @@ package com.nmssdmf.testmodule.designmode;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.nmssdmf.testmodule.R;
+import com.nmssdmf.testmodule.designmode.builder.Builder;
+import com.nmssdmf.testmodule.designmode.builder.Computer;
+import com.nmssdmf.testmodule.designmode.builder.Director;
+import com.nmssdmf.testmodule.designmode.builder.MacbookBuilder;
+import com.nmssdmf.testmodule.designmode.single.Singleton;
 
 public class DesignModeActivity extends AppCompatActivity {
-
+    private final String TAG = DesignModeActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,14 +23,18 @@ public class DesignModeActivity extends AppCompatActivity {
         findViewById(R.id.btnSingleton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Singleton singleton = Singleton.getInstance();
             }
         });
         //Builder模式
         findViewById(R.id.btnBuilder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Builder builder = new MacbookBuilder();
+                Director director = new Director(builder);
+                director.construct("英特尔主板", "Retina显示器");
+                Computer computer = builder.create();
+                Log.d(TAG, "computer = " + computer.toString());
             }
         });
         //原型模式
