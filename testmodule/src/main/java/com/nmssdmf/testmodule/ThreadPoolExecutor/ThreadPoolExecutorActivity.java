@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 import okhttp3.Response;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
+import retrofit2.Retrofit;
 
 public class ThreadPoolExecutorActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
     private final String TAG = ThreadPoolExecutorActivity.class.getSimpleName();
@@ -112,6 +113,7 @@ public class ThreadPoolExecutorActivity extends AppCompatActivity implements Eas
                 executorService.execute(runnable);
             }
         });
+
     }
 
     public void getFile(final long start, final long end) {
