@@ -5,11 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.nmssdmf.testmodule.R;
+import com.nmssdmf.testmodule.designmode.factory.Shape;
+import com.nmssdmf.testmodule.designmode.factory.ShapeFactory;
+import com.nmssdmf.testmodule.designmode.single.Singleton_DCL;
+import com.nmssdmf.testmodule.designmode.single.Singleton_Enum;
+import com.nmssdmf.testmodule.designmode.single.Singleton_Hungry;
+import com.nmssdmf.testmodule.designmode.single.Singleton_Inner;
+import com.nmssdmf.testmodule.designmode.single.Singleton_Lazy;
 
 public class DesignModeActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_design_mode);
 
@@ -17,7 +24,20 @@ public class DesignModeActivity extends AppCompatActivity {
         findViewById(R.id.btnSingleton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Singleton_DCL singleton_dcl = Singleton_DCL.getInstance();
+                singleton_dcl.printName();
 
+                Singleton_Enum singleton_enum = Singleton_Enum.INSTANCE;
+                singleton_enum.printName();
+
+                Singleton_Hungry singleton_hungry = Singleton_Hungry.getInstance();
+                singleton_hungry.printName();
+
+                Singleton_Inner singleton_inner = Singleton_Inner.getInstance();
+                singleton_inner.printName();
+
+                Singleton_Lazy singleton_lazy = Singleton_Lazy.getInstance();
+                singleton_lazy.printName();
             }
         });
         //Builder模式
@@ -38,7 +58,13 @@ public class DesignModeActivity extends AppCompatActivity {
         findViewById(R.id.btnFactory).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ShapeFactory shapeFactory = new ShapeFactory();
 
+                Shape square = shapeFactory.getShape("square");
+                square.draw();
+
+                Shape rectangle = shapeFactory.getShape("rectangle");
+                rectangle.draw();
             }
         });
         //抽象工厂模式

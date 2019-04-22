@@ -76,7 +76,8 @@
             android:process=":aidl" />
 
         <activity android:name=".ipc.aidl.AidlActivity" />
-        <activity android:name=".designmode.DesignModeActivity"></activity>
+        <activity android:name=".designmode.DesignModeActivity" />
+        <activity android:name=".daymode.DayModeActivity"></activity>
     </application>
 
 </manifest>
